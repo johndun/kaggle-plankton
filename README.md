@@ -3,10 +3,12 @@ ami-6238470a
 
 ### Miscellaneous setup
 
-Prepare a volume: 
+Prepare a volume:
+
     sudo mkfs -t ext4 /dev/xvdf
 
 Mount volume:
+
     sudo mkdir ~/data
     sudo chmod a+w ~/data
     sudo mount /dev/xvdf ~/data
@@ -33,6 +35,7 @@ Copy the hashed password. Then,
     !openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
 
 Edit `~/.ipython/profile_nbserver/ipython_notebook_config.py`:
+    
     c.NotebookApp.certfile = u'/home/ubuntu/anaconda/certificates/mycert.pem'
     c.NotebookApp.notebook_dir = u'/home/ubuntu/notebook'
     c.NotebookApp.ip = '*'
@@ -41,4 +44,5 @@ Edit `~/.ipython/profile_nbserver/ipython_notebook_config.py`:
     c.NotebookApp.port = 8888
 
 Run with
+
     ipython notebook --profile=nbserver
