@@ -19,8 +19,8 @@ string.split = function(str, sep)
   return ret
 end
 
-local train_decode_fname = 'data/train_decode.csv'
-local base_img_dir = '/data1/deeplearning/plankton/train'
+local train_decode_fname = 'train_decode.csv'
+local base_img_dir = '/home/ubuntu/data/raw-data/kaggle-plankton/train'
 local file = io.open(train_decode_fname, 'r')
 local skip_head = true
 local n_samples = 1
@@ -30,6 +30,7 @@ for line in file:lines() do
   end
   skip_head = false
 end
+print(n_samples)
 
 local file = io.open(train_decode_fname, 'r')
 local skip_head = true
@@ -61,7 +62,7 @@ for line in file:lines() do
 end
 
 image_tile = image.toDisplayTensor{input=image_tile, padding=4, nrow=10}
-image.saveJPG('deleteme2.jpg', image_tile)
+image.saveJPG('img/test.jpg', image_tile)
 
 
 -- local i = 1
