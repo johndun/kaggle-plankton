@@ -13,6 +13,7 @@ for i = 1, n_labels do
 end
 NUM_COLORS = 1
 INPUT_SZ = 48
+AWS_SYNC_DIR = 's3://johndun.aws.bucket/kaggle-plankton/model'
 
 string.split_it = function(str, sep)
   if str == nil then 
@@ -80,6 +81,14 @@ prepare_val_meta = function(val_prop)
   return train_files, test_files, train_labels, test_labels
 end
 
+save_and_sync = function(str, x, sync)
+  local sync = sync or false
+  torch.save(str, x)
+  if sync then
+    os.execute('aws s3 sync model ' .. AWS_SYNC_DIR)
+  end
+end
+
 calculate_preproc_params = function(train_files, id)
   print('### Calculating parameters for global contrast normalization')
   local id = id or config.id
@@ -93,7 +102,8 @@ calculate_preproc_params = function(train_files, id)
   end
   params = params:mean(1)[1]
   params = {mn = params[1], sd = math.sqrt(params[2])}
-  torch.save(string.format('model/%s_preproc_params.t7', id), params)
+  save_and_sync(string.format('model/%s_preproc_params.t7', id), 
+                params, config.s3_sync)
 end
 
 preprocess = function(x, params)
@@ -230,7 +240,8 @@ training_loop = function(model, criterion,
       if loss < best_test_loss then
         best_epoch = epoch
         best_test_loss = loss
-        torch.save(string.format('model/%s.model', config.id), model)
+        save_and_sync(string.format('model/%s.model', config.id), 
+                      model, config.s3_sync)
         print('Saving new model')
         epochs_since_best = 0
       else
@@ -247,7 +258,8 @@ training_loop = function(model, criterion,
   if config.eval then
     return best_epoch, best_test_loss
   else
-    torch.save(string.format('model/%s.model', config.id), model)
+    save_and_sync(string.format('model/%s.model', config.id), 
+                  model, config.s3_sync)
     return model
   end
 end
@@ -256,9 +268,10 @@ validate = function(model, criterion, learning_rates, seeds, epochs, val_prop)
   print('### Early stopping using validation set')
   local epochs = epochs
   config.eval = true
+  config.id = config.id .. '_val'
   local train_files, test_files, train_labels, test_labels = 
         prepare_val_meta(val_prop)
-  calculate_preproc_params(train_files, config.id .. '_val') -- eventually will need to account for the effect of jittering
+  calculate_preproc_params(train_files, config.id) -- eventually will need to account for the effect of jittering
   for i = 1, #learning_rates do
     print(string.format('\n### Training at learning rate %s: %s', 
                         i, learning_rates[i]))
@@ -269,7 +282,7 @@ validate = function(model, criterion, learning_rates, seeds, epochs, val_prop)
     epochs[i], config.starting_loss = training_loop(model, criterion,  
                                                     train_files, train_labels, 
                                                     test_files,  test_labels)
-    model = torch.load(string.format('model/%s.model', config.id .. '_val'))
+    model = torch.load(string.format('model/%s.model', config.id))
   end
   return epochs
 end
@@ -278,6 +291,7 @@ train = function(model, criterion, learning_rates, seeds, epochs)
   print('\n### Train using full training set')
   local epochs = epochs
   config.eval = false
+  config.id = string.gsub(config.id, '_val$', '')
   local train_files, train_labels = load_meta_data()
   calculate_preproc_params(train_files)
   for i = 1, #learning_rates do

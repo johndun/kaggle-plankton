@@ -37,12 +37,13 @@ config = {
   train_jitter = false, 
   test_jitter = false, 
   early_stop = 1, 
-  evaluate_every = 1
+  evaluate_every = 1, 
+  s3_sync = true
 }
 
 local learning_rates = {1.0, 0.1}
 local seeds = {opt.s1, opt.s2}
-local epochs = {50, 50}
+local epochs = {2, 2}
 local val_prop = 0.1
 local model, criterion = create_model()
 epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
