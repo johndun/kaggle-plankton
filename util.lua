@@ -305,3 +305,7 @@ train = function(model, criterion, learning_rates, seeds, epochs)
   end
   return model
 end
+
+predict = function(model, files)
+  
+end
