@@ -1,4 +1,5 @@
-data/*
+data/train/*
+data/test/*
 img/*
 log/*
 model/*
