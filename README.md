@@ -1,7 +1,7 @@
 Initial (successful!!) setup for running on EC2 AMI: 
 ami-6238470a
 
-### Miscellaneous setup
+### Block storage
 
 Prepare a volume:
 
@@ -18,6 +18,14 @@ Security group settings (from [here](https://gist.github.com/iamatypeofwalrus/51
 > You should have rules for SSH(22): 0.0.0.0/0, HTTPS(443): 0.0.0.0/0, and 8888: 0.0.0.0/0
 
 (Use `Custom TCP Rule` for the 8888)
+
+
+### AWS CLI
+
+    sudo apt-get install awscli
+    aws configure
+
+### IPython Notebook
 
 IPython notebook setup (from 
 [here](http://ipython.org/ipython-doc/dev/notebook/public_server.html#running-a-public-notebook-server))

@@ -1,185 +1,292 @@
 require 'torch'
 require 'image'
+require 'optim'
 torch.setdefaulttensortype('torch.FloatTensor')
 torch.setnumthreads(4)
 
-FB = false
-TRAIN_FNAME = 'data/train.t7'
-TEST_FNAME = 'data/test.t7'
+local train_decode_fname = 'train_decode.csv'
+local base_img_dir = '/home/ubuntu/data/raw-data/kaggle-plankton'
+local n_labels = 121
 CLASSES = {}
-for i = 1, 121 do
+for i = 1, n_labels do
   CLASSES[i] = i
 end
 NUM_COLORS = 1
-INPUT_SZ = 128
-CROP_OFFSET = 16
-ZOOM_AMT = 8
+INPUT_SZ = 48
 
-function crop_images(train_x)
-  return batch_sample{src       = train_x, 
-                      crp_off_x = CROP_OFFSET+1, 
-                      crp_off_y = CROP_OFFSET+1, 
-                      crp_sz_x  = INPUT_SZ,
-                      crp_sz_y  = INPUT_SZ}
-end
-
-function add_conv_layer(model, a, b, c, d, e, f)
-  if FB then
-    model:add(nn.SpatialConvolutionCuFFT(a, b, c, d, e, f))
-    return
+string.split_it = function(str, sep)
+  if str == nil then 
+    return nil 
   end
-  model:add(nn.SpatialConvolutionMM(a, b, c, d, e, f))
+  return string.gmatch(str, '[^\\' .. sep .. ']+')
 end
 
--- Global contrast normalization
-function preprocess(x, params)
-  local params = params or {}
-  if #params == 0 then
-    params['g_mn'] = x:mean()
-    params['g_sd'] = x:std()
-    torch.save(string.format('model/%s_preproc_params.t7', config.id), params)
+string.split = function(str, sep)
+  local ret = {}
+  for seg in string.split_it(str, sep) do
+    ret[#ret+1] = seg
   end
-  x:add(-params['g_mn'])
-  x:mul(1/params['g_sd'])
-  return params
+  return ret
 end
 
--- Samples a single image with augmentation: 
--- horizontal flipping, rotation, cropping and rescaling
-function sample_image(arg)
-  local src       = arg.src
-  local hflip     = arg.hflip or false
-  local rotate    = arg.rotate or 0
-  local crp_off_x = arg.crp_off_x or 1
-  local crp_off_y = arg.crp_off_y or 1
-  local crp_sz_x  = arg.crp_sz_x or src:size(3)
-  local crp_sz_y  = arg.crp_sz_y or src:size(2)
-  local n_colors  = src:size(1) 
-  local out_w     = arg.out_w or crp_sz_x
-  local out_h     = arg.out_h or crp_sz_y
+load_meta_data = function()
+  local file = io.open(train_decode_fname, 'r')
+  local skip_head = true
+  local n_samples = 1
+  for line in file:lines() do
+    if not skip_head then
+      n_samples = n_samples + 1
+    end
+    skip_head = false
+  end
+
+  local file = io.open(train_decode_fname, 'r')
+  local skip_head = true
+  local line
+  local j = 0
+  local files = {}
+  local labels = {}
+  for line in file:lines() do
+    if not skip_head then
+      j = j + 1
+      local row_str = string.split(line, ',')
+      labels[j] = row_str[1]
+      files[j] = row_str[2]
+    end
+    skip_head = false
+  end
+  return files, labels
+end
+
+prepare_val_meta = function(val_prop)
+  local files, labels = load_meta_data()
   
-  if hflip then
-    src = image.hflip(src)
-  end
-  if rotate ~= 0 then
-    src = image.rotate(src, rotate)
-  end
-  src = image.crop(src, crp_off_x, crp_off_y, 
-                   crp_off_x + crp_sz_x - 1, crp_off_y + crp_sz_y - 1)
-  if src:size(3) ~= out_w or src:size(2) ~= out_h then
-    src = image.scale(src, out_w, out_h, 'bilinear')
-  end
-  return src
-end
-
--- Builds a dataset for processing by applying one sampling to  
--- each image in a dataset
-function batch_sample(arg)
-  local src       = arg.src
-  local hflip     = arg.hflip or false
-  local rotate    = arg.rotate or 0
-  local crp_off_x = arg.crp_off_x or 1
-  local crp_off_y = arg.crp_off_y or 1
-  local crp_sz_x  = arg.crp_sz_x or src:size(3)
-  local crp_sz_y  = arg.crp_sz_y or src:size(2)
-  local n_colors  = src:size(2)
-  local out_w     = arg.out_w or crp_sz_x
-  local out_h     = arg.out_h or crp_sz_y
+  local train_files = {}
+  local test_files = {}
+  local train_labels = {}
+  local test_labels = {}
+  local cutoff = math.floor((1 - val_prop) * #files)
   
-  local n_samples = src:size(1)
-  local out = torch.Tensor(n_samples, n_colors, out_h, out_w)
-  for i = 1, n_samples do
-    local new_img = sample_image{src       = src[i], 
-                                 hflip     = hflip, 
-                                 rotate    = rotate, 
-                                 crp_off_x = crp_off_x, 
-                                 crp_off_y = crp_off_y,
-                                 crp_sz_x  = crp_sz_x, 
-                                 crp_sz_y  = crp_sz_y,
-                                 out_w     = out_w,
-                                 out_h     = out_h}
-    out[i]:copy(new_img)
+  for i = 1, #files do
+    if i <= cutoff then
+      table.insert(train_files, files[i])
+      table.insert(train_labels, labels[i])
+    else
+      table.insert(test_files, files[i])
+      table.insert(test_labels, labels[i])
+    end
   end
-  return out
+  
+  return train_files, test_files, train_labels, test_labels
 end
 
--- Random scaling and cropping on a single image
-function random_jitter(src)
-  local out_sz = INPUT_SZ
-  local start_sz = INPUT_SZ + 2 * CROP_OFFSET
-  local crp_sz = math.random(out_sz - ZOOM_AMT, start_sz)
-  local crp_off_x = math.random(1, start_sz - crp_sz + 1)
-  local crp_off_y = math.random(1, start_sz - crp_sz + 1)
-  local new_x = sample_image{src       = src, 
-                             crp_off_x = crp_off_x, 
-                             crp_off_y = crp_off_y, 
-                             crp_sz_x  = crp_sz, 
-                             crp_sz_y  = crp_sz, 
-                             out_w     = out_sz, 
-                             out_h     = out_sz}
-  return new_x
+calculate_preproc_params = function(train_files)
+  print('### Calculating parameters for global contrast normalization')
+  local params = torch.Tensor(#train_files, 2)
+  for i = 1, #train_files do
+    local img = image.loadJPG(base_img_dir .. '/train/' .. train_files[i])
+    img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+    img:add(-1):mul(-1):abs()
+    params[i][1] = img:mean()
+    params[i][2] = img:std()^2
+  end
+  params = params:mean(1)[1]
+  params = {mn = params[1], sd = math.sqrt(params[2])}
+  torch.save(string.format('model/%s_preproc_params.t7', config.id), params)
 end
 
-function validation_split(dat_x, dat_y, val_size)
-  local n = dat_x:size(1)
-  local train_x = torch.Tensor(n - val_size, 
-                               dat_x:size(2), 
-                               dat_x:size(3), 
-                               dat_x:size(4))
-  local train_y = torch.Tensor(n - val_size, 
-                               dat_y:size(2))
-  local test_x = torch.Tensor(val_size, 
-                              dat_x:size(2), 
-                              dat_x:size(3), 
-                              dat_x:size(4))
-  local test_y = torch.Tensor(val_size, 
-                              dat_y:size(2))
-  train_x:copy(dat_x:narrow(1, 1, n - val_size))
-  train_y:copy(dat_y:narrow(1, 1, n - val_size))
-  test_x:copy(dat_x:narrow(1, n - val_size + 1, val_size))
-  test_y:copy(dat_y:narrow(1, n - val_size + 1, val_size))
-  return train_x, train_y, test_x, test_y
+preprocess = function(x, params)
+  x:add(-1):mul(-1):abs()
+  x:add(-params['mn'])
+  x:mul(1/params['sd'])
+  return x
 end
 
--- local train_x, train_y = unpack(torch.load(TRAIN_FNAME))
--- print(train_x:size())
--- train_x = train_x:narrow(1, 1, 100)
--- train_x = crop_images(train_x)
--- local preprocess_params = preprocess(train_x)
--- local image_tile = image.toDisplayTensor{input=train_x, padding=4, nrow=10}
--- image.saveJPG('img/batch-sample.jpg', image_tile)
+sgd = function(model, criterion, files, labels)
+  local parameters, gradParameters = model:getParameters()
+  local confusion = optim.ConfusionMatrix(CLASSES)
+  local loss = 0.0
+  local N = #files
+  local shuffle = torch.randperm(N)
+  local batch_size = config.batch_size or 12
+  local num_batches = 0
+  local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
+  local targets = torch.Tensor(batch_size, #CLASSES):cuda()
+  local preprocess_params = torch.load(string.format(
+                            'model/%s_preproc_params.t7', config.id))
+  for t = 1, N, batch_size do
+    if t + batch_size - 1 > N then
+      break
+    end
+    if opt.progress then
+      xlua.progress(t, N)
+    end
+    num_batches = num_batches + 1
+    targets:zero()
+    for i = 1, batch_size do
+      local fname = files[shuffle[t + i - 1]]
+      local label = labels[shuffle[t + i - 1]]
+      targets[i][label] = 1
+      local img = image.loadJPG(base_img_dir .. '/train/' .. fname)
+      img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+      inputs[i]:copy(img)
+    end
+    inputs = preprocess(inputs, preprocess_params)
+    
+    local feval = function(x)
+      if x ~= parameters then
+        parameters:copy(x)
+      end
+      gradParameters:zero()
+      local output = model:forward(inputs)
+      local f = criterion:forward(output, targets)
+      local df_do = criterion:backward(output, targets)
+      confusion:batchAdd(output, targets)
+      model:backward(inputs, df_do)
+      loss = loss + f * batch_size
+      return f, gradParameters
+    end
+    
+    optim.sgd(feval, parameters, config)
+    collectgarbage()
+  end
+  if opt.progress then
+    xlua.progress(N, N)
+  end
+  confusion:updateValids()
+  loss = loss / num_batches
+  return loss, confusion.totalValid
+end
 
+test = function(model, criterion, files, labels)
+  local confusion = optim.ConfusionMatrix(CLASSES)
+  local loss = 0.0
+  local N = #files
+  local batch_size = config.batch_size or 12
+  local num_batches = 0
+  local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
+  local targets = torch.Tensor(batch_size, #CLASSES):cuda()
+  local preprocess_params = torch.load(string.format(
+                            'model/%s_preproc_params.t7', config.id))
+  for t = 1, N, batch_size do
+    if t + batch_size - 1 > N then
+      batch_size = N - t + 1
+    end
+    if opt.progress then
+      xlua.progress(t, N)
+    end
+    num_batches = num_batches + 1
+    targets:zero()
+    for i = 1, batch_size do
+      local fname = files[t + i - 1]
+      local label = labels[t + i - 1]
+      targets[i][label] = 1
+      local img = image.loadJPG(base_img_dir .. '/train/' .. fname)
+      img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+      inputs[i]:copy(img)
+    end
+    inputs = preprocess(inputs, preprocess_params)
+    local output = model:forward(inputs)
+    local f = criterion:forward(output:narrow(1, 1, batch_size), 
+                                targets:narrow(1, 1, batch_size))
+    confusion:batchAdd(output:narrow(1, 1, batch_size), 
+                       targets:narrow(1, 1, batch_size))
+    loss = loss + f * batch_size
+    collectgarbage()
+  end
+  if opt.progress then
+    xlua.progress(N, N)
+  end
+  confusion:updateValids()
+  loss = loss / num_batches
+  return loss, confusion.totalValid
+end
 
+training_loop = function(model, criterion, 
+                         train_files, train_labels, 
+                         test_files,  test_labels)
+  torch.manualSeed(config.train_seed)
+  local parameters = model:getParameters()
+  print('### Number of model parameters: ' .. parameters:size(1))
+  local best_test_loss = config.starting_loss or 1000.
+  local evaluate_every = config.evaluate_every or 1
+  local best_epoch = 0
+  local epochs_since_best = 0
+  for epoch = 1, config.epochs do
+    model:training()
+    print('\nTraining epoch ' .. epoch)
+    local loss, acc = sgd(model, criterion, train_files, train_labels)
+    print('Final learning rate: ' .. 
+          (config.learningRate / 
+          (1 + config.learningRateDecay * config.evalCounter)))
+    print('Accuracy on training set: ' .. acc)
+    print('Loss on training set:     ' .. loss)
+    if config.eval and epoch % evaluate_every == 0 then
+      model:evaluate()
+      local loss, acc = test(model, criterion, test_files, test_labels)
+      print('Accuracy on test set:     ' .. acc)
+      print('Loss on test set:         ' .. loss)
+      if loss < best_test_loss then
+        best_epoch = epoch
+        best_test_loss = loss
+        torch.save(string.format('model/%s.model', config.id), model)
+        print('Saving new model')
+        epochs_since_best = 0
+      else
+        epochs_since_best = epochs_since_best + evaluate_every
+        if config.early_stop and 
+           epochs_since_best >= config.early_stop then
+          print(string.format('Stopping, no improvement in %s epochs', 
+                              config.early_stop))
+          break
+        end
+      end
+    end
+  end
+  if config.eval then
+    return best_epoch, best_test_loss
+  else
+    torch.save(string.format('model/%s.model', config.id), model)
+    return model
+  end
+end
 
+validate = function(model, criterion, learning_rates, seeds, epochs, val_prop)
+  print('### Early stopping using validation set')
+  local epochs = epochs
+  config.eval = true
+  local train_files, test_files, train_labels, test_labels = 
+        prepare_val_meta(val_prop)
+  calculate_preproc_params(train_files) -- eventually will need to account for the effect of jittering
+  for i = 1, #learning_rates do
+    print(string.format('\n### Training at learning rate %s: %s', 
+                        i, learning_rates[i]))
+    config.learningRate = learning_rates[i]
+    config.train_seed = seeds[i]
+    config.epochs = epochs[i]
+    config.evalCounter = nil
+    epochs[i], config.starting_loss = training_loop(model, criterion,  
+                                                    train_files, train_labels, 
+                                                    test_files,  test_labels)
+    model = torch.load(string.format('model/%s.model', config.id))
+  end
+  return epochs
+end
 
--- local train_x = torch.load(TEST_FNAME)
--- train_x = batch_sample{src       = train_x, 
-                       -- crp_off_x = 5, 
-                       -- crp_off_y = 5, 
-                       -- crp_sz_x  = 24,
-                       -- crp_sz_y  = 24}
--- local ids = {84, 539, 641, 845, 1151, 
-             -- 1960, 2252, 2585, 3530, 3734, 
-             -- 3871, 4276, 4342, 4928, 6980}
--- local x = torch.Tensor(#ids, INPUT_SZ[1], INPUT_SZ[2], INPUT_SZ[3])
--- for i = 1, #ids do
-  -- x[i] = train_x[ids[i]]
--- end
--- local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=5}
--- image.saveJPG('img/deleteme.jpg', image_tile)
-
--- local train_x, train_y = unpack(torch.load(TRAIN_FNAME))
--- local image_tile = torch.Tensor(100, NUM_COLORS, INPUT_SZ, INPUT_SZ)
--- for i = 1, 100 do
-  -- local x = train_x[i]
-  -- local new_x = random_jitter(x)
-  -- image_tile[i]:copy(new_x)
--- end
--- image_tile = image.toDisplayTensor{input=image_tile, padding=4, nrow=10}
--- image.saveJPG('img/random-jitter.jpg', image_tile)
-
--- local train_x = torch.load(TEST_FNAME)
--- local x = train_x[276]
--- local image_tile = test_jitter(x)
--- image_tile = image.toDisplayTensor{input=image_tile, padding=4, nrow=6}
--- image.saveJPG('img/test-jitter.jpg', image_tile)
+train = function(model, criterion, learning_rates, seeds, epochs)
+  print('\n### Train using full training set')
+  local epochs = epochs
+  config.eval = false
+  local train_files, train_labels = load_meta_data()
+  calculate_preproc_params(train_files)
+  for i = 1, #learning_rates do
+    print(string.format('\n### Training at learning rate %s: %s', 
+                        i, learning_rates[i]))
+    config.learningRate = learning_rates[i]
+    config.train_seed = seeds[i]
+    config.epochs = epochs[i]
+    config.evalCounter = nil
+    model = training_loop(model, criterion, train_files, train_labels)
+  end
+  return model
+end
