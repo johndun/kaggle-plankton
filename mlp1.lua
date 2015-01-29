@@ -1,3 +1,4 @@
+-- Loss on test set:         2.1458830573441
 require 'torch'
 require 'nn'
 require './util'
@@ -43,10 +44,16 @@ config = {
 
 local learning_rates = {1.0, 0.1}
 local seeds = {opt.s1, opt.s2}
-local epochs = {2, 2}
+local epochs = {20, 10}
 local val_prop = 0.1
 local model, criterion = create_model()
+
 epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
 
 local model, criterion = create_model()
 model = train(model, criterion, learning_rates, seeds, epochs)
+
+local test_images = get_test_images(TEST_DECODE_FNAME)
+local model = torch.load('model/' .. config.id .. '.model')
+local preds = gen_predictions(model, test_images)
+write_predictions(preds, test_images)

@@ -19,3 +19,9 @@ write.table(header, 'data/submission_header.csv',
 
 summary(as.numeric(table(dat$label)))
 print(length(labs))
+
+test_dir = 'data/test'
+imgs = dir(test_dir, recursive=F)
+imgs = imgs[order(gsub('.jpg$', '', imgs))]
+write.table(imgs, 'data/test_images.csv', 
+            row.names=F, quote=F, col.names=F, sep=',')

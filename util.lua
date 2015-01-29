@@ -14,6 +14,7 @@ end
 NUM_COLORS = 1
 INPUT_SZ = 48
 AWS_SYNC_DIR = 's3://johndun.aws.bucket/kaggle-plankton/model'
+TEST_DECODE_FNAME = 'data/test_images.csv'
 
 string.split_it = function(str, sep)
   if str == nil then 
@@ -28,6 +29,15 @@ string.split = function(str, sep)
     ret[#ret+1] = seg
   end
   return ret
+end
+
+get_test_images = function(decode_fname)
+  local file = io.open(TEST_DECODE_FNAME, 'r')
+  local images = {}
+  for line in file:lines() do
+    table.insert(images, line)
+  end
+  return images
 end
 
 load_meta_data = function()
@@ -306,6 +316,64 @@ train = function(model, criterion, learning_rates, seeds, epochs)
   return model
 end
 
-predict = function(model, files)
-  
+gen_predictions = function(model, images)
+  print('\n### Generating test predictions')
+  local batch_size = config.batch_size or 12
+  local num_batches = 0
+  local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
+  local preprocess_params = torch.load(string.format(
+                            'model/%s_preproc_params.t7', config.id))
+  local N = #images
+  local preds = torch.Tensor(N, #CLASSES)
+  for t = 1, N, batch_size do
+    if t + batch_size - 1 > N then
+      batch_size = N - t + 1
+    end
+    if opt.progress then
+      xlua.progress(t, N)
+    end
+    num_batches = num_batches + 1
+    for i = 1, batch_size do
+      local fname = images[t + i - 1]
+      local img = image.loadJPG(base_img_dir .. '/test/' .. fname)
+      img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+      inputs[i]:copy(img)
+    end
+    inputs = preprocess(inputs, preprocess_params)
+    local output = model:forward(inputs)
+    preds:narrow(1, t, batch_size):copy(output:narrow(1, 1, batch_size))
+    collectgarbage()
+  end
+  if opt.progress then
+    xlua.progress(N, N)
+  end
+  preds:exp()
+  return preds
+end
+
+write_predictions = function(preds, images)
+  print('\n### Writing test predictions to file')
+  local N = #images
+  local file = io.open('data/submission_header.csv')
+  local submission_header = file:read()
+  local fname = 'result/' .. config.id .. '.csv'
+  local file = io.open(fname, 'w')
+  file:write(submission_header .. '\n')
+  for i = 1, N do
+    if opt.progress then
+      xlua.progress(i, N)
+    end
+    local str = images[i]
+    local line = preds[i]
+    for j = 1, #CLASSES do
+      str = str .. ',' .. line[j]
+    end
+    file:write(str .. '\n')
+  end
+  if opt.progress then
+    xlua.progress(N, N)
+  end
+  file:close()
+  os.execute('zip ' .. fname .. '.zip ' .. fname)
+  os.execute('rm ' .. fname )
 end
