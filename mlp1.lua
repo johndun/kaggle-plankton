@@ -33,13 +33,14 @@ config = {
   id = opt.id or 'dummy', 
   learningRateDecay = 0.0, 
   momentum = 0.9, 
-  batch_size = 128, 
+  batch_size = 32, 
   model_seed = opt.s0, 
   train_jitter = false, 
   test_jitter = false, 
   early_stop = 1, 
   evaluate_every = 1, 
-  s3_sync = true
+  s3_sync = true, 
+  test_jitter = false
 }
 
 local learning_rates = {1.0, 0.1}
@@ -53,7 +54,7 @@ epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
 local model, criterion = create_model()
 model = train(model, criterion, learning_rates, seeds, epochs)
 
-local test_images = get_test_images(TEST_DECODE_FNAME)
+local test_images = get_test_image_list(TEST_DECODE_FNAME)
 local model = torch.load('model/' .. config.id .. '.model')
 local preds = gen_predictions(model, test_images)
 write_predictions(preds, test_images)

@@ -31,7 +31,7 @@ string.split = function(str, sep)
   return ret
 end
 
-get_test_images = function(decode_fname)
+get_test_image_list = function(decode_fname)
   local file = io.open(TEST_DECODE_FNAME, 'r')
   local images = {}
   for line in file:lines() do
@@ -104,9 +104,9 @@ calculate_preproc_params = function(train_files, id)
   local id = id or config.id
   local params = torch.Tensor(#train_files, 2)
   for i = 1, #train_files do
-    local img = image.loadJPG(base_img_dir .. '/train/' .. train_files[i])
-    img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
-    img:add(-1):mul(-1):abs()
+    local img = sample_image{fname    = base_img_dir .. '/train/' .. train_files[i], 
+                             resize_x = INPUT_SZ, 
+                             resize_y = INPUT_SZ}
     params[i][1] = img:mean()
     params[i][2] = img:std()^2
   end
@@ -117,7 +117,6 @@ calculate_preproc_params = function(train_files, id)
 end
 
 preprocess = function(x, params)
-  x:add(-1):mul(-1):abs()
   x:add(-params['mn'])
   x:mul(1/params['sd'])
   return x
@@ -148,8 +147,7 @@ sgd = function(model, criterion, files, labels)
       local fname = files[shuffle[t + i - 1]]
       local label = labels[shuffle[t + i - 1]]
       targets[i][label] = 1
-      local img = image.loadJPG(base_img_dir .. '/train/' .. fname)
-      img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+      local img = random_jitter(base_img_dir .. '/train/' .. fname)
       inputs[i]:copy(img)
     end
     inputs = preprocess(inputs, preprocess_params)
@@ -202,8 +200,7 @@ test = function(model, criterion, files, labels)
       local fname = files[t + i - 1]
       local label = labels[t + i - 1]
       targets[i][label] = 1
-      local img = image.loadJPG(base_img_dir .. '/train/' .. fname)
-      img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+      local img = test_jitter(base_img_dir .. '/train/' .. fname)
       inputs[i]:copy(img)
     end
     inputs = preprocess(inputs, preprocess_params)
@@ -335,8 +332,7 @@ gen_predictions = function(model, images)
     num_batches = num_batches + 1
     for i = 1, batch_size do
       local fname = images[t + i - 1]
-      local img = image.loadJPG(base_img_dir .. '/test/' .. fname)
-      img = image.scale(img, INPUT_SZ, INPUT_SZ, 'bilinear')
+      local img = test_jitter(base_img_dir .. '/test/' .. fname)
       inputs[i]:copy(img)
     end
     inputs = preprocess(inputs, preprocess_params)
@@ -377,3 +373,90 @@ write_predictions = function(preds, images)
   os.execute('zip ' .. fname .. '.zip ' .. fname)
   os.execute('rm ' .. fname )
 end
+
+sample_image = function(arg)
+  local src       = image.loadJPG(arg.fname):add(-1):mul(-1):abs()
+  local hflip     = arg.hflip or false
+  local rotate    = arg.rotate or false
+  local resize_x  = arg.resize_x or src:size(3)
+  local resize_y  = arg.resize_y or src:size(2)
+  local pad       = arg.pad or false
+  local crp_off_x = arg.crp_off_x or 1
+  local crp_off_y = arg.crp_off_y or 1
+  local crp_sz_x  = arg.crp_sz_x or resize_x
+  local crp_sz_y  = arg.crp_sz_y or resize_y
+  local n_colors  = src:size(1)
+  local out_w     = arg.out_w or crp_sz_x
+  local out_h     = arg.out_h or crp_sz_y
+  
+  src = image.scale(src, resize_x, resize_y, 'bilinear')
+  if pad then
+    local new_img = torch.Tensor(n_colors, 
+                                 resize_y + 2 * pad, 
+                                 resize_x + 2 * pad):zero()
+    new_img:narrow(2, pad + 1, resize_y):narrow(3, pad + 1, resize_x):copy(src)
+    src = new_img
+  end
+  if hflip then
+    src = image.hflip(src)
+  end
+  if rotate then
+    src = image.rotate(src, rotate)
+  end
+  src = image.crop(src, crp_off_x, crp_off_y, 
+                   crp_off_x + crp_sz_x - 1, crp_off_y + crp_sz_y - 1)
+  if src:size(3) ~= out_w or src:size(2) ~= out_h then
+    src = image.scale(src, out_w, out_h, 'bilinear')
+  end
+  return src
+end
+
+random_jitter = function(fname)
+  local jitter = config.train_jitter or false
+  if not jitter then
+    return sample_image{
+      fname = fname, 
+      resize_x = INPUT_SZ, 
+      resize_y = INPUT_SZ
+    }
+  end
+  return sample_image{
+    fname = fname, 
+    resize_x = INPUT_SZ, 
+    resize_y = INPUT_SZ
+  }
+end
+
+test_jitter = function(fname, jitter)
+  local jitter = config.test_jitter or jitter or false
+  if not jitter then
+    return sample_image{
+      fname = fname, 
+      resize_x = INPUT_SZ, 
+      resize_y = INPUT_SZ
+    }
+  end
+  local samples = {}
+  for k, hflip in pairs({false, true}) do
+    for rotation = 0, 3 do
+      local img = sample_image{
+        fname = fname, 
+        rotate = rotation * 2 * math.pi / 4, 
+        resize_x = INPUT_SZ, 
+        resize_y = INPUT_SZ, 
+        hflip    = hflip
+      }
+      table.insert(samples, img)
+    end
+  end
+  local result = torch.Tensor(#samples, NUM_COLORS, INPUT_SZ, INPUT_SZ)
+  for i = 1, #samples do
+    result[i]:copy(samples[i])
+  end
+  return result
+end
+
+local x = test_jitter('data/test/100.jpg', true)
+print(x:size())
+local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=4}
+image.saveJPG('img/test-jitter.jpg', image_tile)
