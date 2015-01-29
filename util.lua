@@ -399,10 +399,22 @@ sample_image = function(arg)
   local resize_x  = arg.resize_x or src:size(3)
   local resize_y  = arg.resize_y or src:size(2)
   local pad       = arg.pad or false
-  local crp_off_x = arg.crp_off_x or 1
-  local crp_off_y = arg.crp_off_y or 1
-  local crp_sz_x  = arg.crp_sz_x or resize_x
-  local crp_sz_y  = arg.crp_sz_y or resize_y
+  local crp_off_x = 1
+  if arg.crp_off_x then
+    crp_off_x = math.floor(arg.crp_off_x * resize_x) + 1
+  end
+  local crp_off_y = 1
+  if arg.crp_off_y then
+    crp_off_y = math.floor(arg.crp_off_y * resize_y) + 1
+  end
+  local crp_sz_x  = resize_x
+  if arg.crp_sz_x then
+    crp_sz_x = math.floor(arg.crp_sz_x * resize_x)
+  end
+  local crp_sz_y  = resize_y
+  if arg.crp_sz_y then
+    crp_sz_y = math.floor(arg.crp_sz_y * resize_y)
+  end
   local n_colors  = src:size(1)
   local out_w     = arg.out_w or crp_sz_x
   local out_h     = arg.out_h or crp_sz_y
@@ -428,58 +440,3 @@ sample_image = function(arg)
   end
   return src
 end
-
-random_jitter = function(fname)
-  local jitter = config.train_jitter or false
-  if not jitter then
-    return sample_image{
-      fname = fname, 
-      resize_x = INPUT_SZ, 
-      resize_y = INPUT_SZ
-    }
-  end
-  local rotation = 2 * math.pi * (math.random(4) - 1) / 4
-  local hflip = math.random() < 0.5
-  return sample_image{
-    fname = fname, 
-    resize_x = INPUT_SZ, 
-    resize_y = INPUT_SZ, 
-    rotate = rotation, 
-    hflip = hflip
-  }
-end
-
-TEST_JITTER_SZ = 8
-test_jitter = function(fname, jitter)
-  local jitter = config.test_jitter or jitter or false
-  if not jitter then
-    return sample_image{
-      fname = fname, 
-      resize_x = INPUT_SZ, 
-      resize_y = INPUT_SZ
-    }
-  end
-  local samples = {}
-  for k, hflip in pairs({false, true}) do
-    for rotation = 0, 3 do
-      local img = sample_image{
-        fname = fname, 
-        rotate = rotation * 2 * math.pi / 4, 
-        resize_x = INPUT_SZ, 
-        resize_y = INPUT_SZ, 
-        hflip    = hflip
-      }
-      table.insert(samples, img)
-    end
-  end
-  local result = torch.Tensor(#samples, NUM_COLORS, INPUT_SZ, INPUT_SZ)
-  for i = 1, #samples do
-    result[i]:copy(samples[i])
-  end
-  return result
-end
-
--- local x = test_jitter('data/test/100.jpg', true)
--- print(x:size())
--- local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=4}
--- image.saveJPG('img/test-jitter.jpg', image_tile)

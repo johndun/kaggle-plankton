@@ -2,6 +2,7 @@
 require 'torch'
 require 'nn'
 require './util'
+require './jitter_rot_flip'
 require 'cunn'
 
 local function create_model()

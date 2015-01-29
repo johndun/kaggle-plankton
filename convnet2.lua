@@ -1,7 +1,7 @@
 require 'torch'
 require 'nn'
 require './util'
-require './jitter_rot_flip'
+require './jitter_rot_flip_aspect'
 require 'cunn'
 
 local function create_model()
@@ -75,7 +75,7 @@ end
 
 local cmd = torch.CmdLine()
 cmd:option('-progress', false, 'show progress bars')
-cmd:option('-id', 'convnet1', 'model id')
+cmd:option('-id', 'convnet2', 'model id')
 cmd:option('-s0', 123, 'model seed')
 cmd:option('-s1', 134, 'seed for learning rate 1')
 cmd:option('-s2', 2654, 'seed for learning rate 2')
@@ -99,9 +99,9 @@ if not config.test_jitter then
   TEST_JITTER_SZ = 1
 end
 
-local learning_rates = {1.0, 0.1}
-local seeds = {opt.s1, opt.s2}
-local epochs = {100, 50}
+local learning_rates = {1.5, 0.5, 0.1}
+local seeds = {opt.s1, opt.s2, opt.s3}
+local epochs = {100, 100, 50}
 local val_prop = 0.1
 local model, criterion = create_model()
 -- local parameters, gradParameters = model:getParameters()
