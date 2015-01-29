@@ -13,7 +13,7 @@ for i = 1, n_labels do
 end
 NUM_COLORS = 1
 INPUT_SZ = 48
-AWS_SYNC_DIR = 's3://johndun.aws.bucket/kaggle-plankton/model'
+AWS_SYNC_DIR = 's3://johndun.aws.bucket/kaggle-plankton'
 TEST_DECODE_FNAME = 'data/test_images.csv'
 
 string.split_it = function(str, sep)
@@ -162,54 +162,11 @@ sgd = function(model, criterion, files, labels)
       local df_do = criterion:backward(output, targets)
       confusion:batchAdd(output, targets)
       model:backward(inputs, df_do)
-      loss = loss + f * batch_size
+      loss = loss + f * #CLASSES
       return f, gradParameters
     end
     
     optim.sgd(feval, parameters, config)
-    collectgarbage()
-  end
-  if opt.progress then
-    xlua.progress(N, N)
-  end
-  confusion:updateValids()
-  loss = loss / num_batches
-  return loss, confusion.totalValid
-end
-
-test = function(model, criterion, files, labels)
-  local confusion = optim.ConfusionMatrix(CLASSES)
-  local loss = 0.0
-  local N = #files
-  local batch_size = config.batch_size or 12
-  local num_batches = 0
-  local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
-  local targets = torch.Tensor(batch_size, #CLASSES):cuda()
-  local preprocess_params = torch.load(string.format(
-                            'model/%s_preproc_params.t7', config.id))
-  for t = 1, N, batch_size do
-    if t + batch_size - 1 > N then
-      batch_size = N - t + 1
-    end
-    if opt.progress then
-      xlua.progress(t, N)
-    end
-    num_batches = num_batches + 1
-    targets:zero()
-    for i = 1, batch_size do
-      local fname = files[t + i - 1]
-      local label = labels[t + i - 1]
-      targets[i][label] = 1
-      local img = test_jitter(base_img_dir .. '/train/' .. fname)
-      inputs[i]:copy(img)
-    end
-    inputs = preprocess(inputs, preprocess_params)
-    local output = model:forward(inputs)
-    local f = criterion:forward(output:narrow(1, 1, batch_size), 
-                                targets:narrow(1, 1, batch_size))
-    confusion:batchAdd(output:narrow(1, 1, batch_size), 
-                       targets:narrow(1, 1, batch_size))
-    loss = loss + f * batch_size
     collectgarbage()
   end
   if opt.progress then
@@ -313,15 +270,70 @@ train = function(model, criterion, learning_rates, seeds, epochs)
   return model
 end
 
-gen_predictions = function(model, images)
-  print('\n### Generating test predictions')
+test = function(model, criterion, files, labels)
+  local confusion = optim.ConfusionMatrix(CLASSES)
+  model:evaluate()
+  local loss = 0.0
+  local N = #files
   local batch_size = config.batch_size or 12
-  local num_batches = 0
   local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
+  
+  batch_size = math.floor(batch_size / TEST_JITTER_SZ)
+  local targets = torch.Tensor(batch_size, #CLASSES):cuda()
+
+  local num_batches = 0
   local preprocess_params = torch.load(string.format(
                             'model/%s_preproc_params.t7', config.id))
+  for t = 1, N, batch_size do
+    if t + batch_size - 1 > N then
+      batch_size = N - t + 1
+    end
+    if opt.progress then
+      xlua.progress(t, N)
+    end
+    num_batches = num_batches + 1
+    targets:zero()
+    for i = 1, batch_size do
+      local fname = files[t + i - 1]
+      local imgs = test_jitter(base_img_dir .. '/train/' .. fname)
+      inputs:narrow(1, 1 + TEST_JITTER_SZ*(i-1), TEST_JITTER_SZ):copy(imgs)
+      local label = labels[t + i - 1]
+      targets[i][label] = 1
+    end
+    inputs = preprocess(inputs, preprocess_params)
+    local output = model:forward(inputs)
+    local current_loss = 0
+    for i = 1, batch_size do
+      local preds = output:narrow(1, 
+                    1 + TEST_JITTER_SZ*(i-1), 
+                    TEST_JITTER_SZ):mean(1):reshape(#CLASSES)
+      confusion:add(preds, targets[i])
+      local f = criterion:forward(preds, targets[i])
+      current_loss = current_loss + f * #CLASSES
+    end
+    current_loss = current_loss / batch_size
+    loss = loss + current_loss
+    collectgarbage()
+  end
+  if opt.progress then
+    xlua.progress(N, N)
+  end
+  confusion:updateValids()
+  loss = loss / num_batches
+  return loss, confusion.totalValid
+end
+
+gen_predictions = function(model, images)
+  print('\n### Generating test predictions')
+  model:evaluate()
+  local batch_size = config.batch_size or 12
   local N = #images
+  local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
   local preds = torch.Tensor(N, #CLASSES)
+  batch_size = math.floor(batch_size / TEST_JITTER_SZ)
+  local num_batches = 0
+  local preprocess_params = torch.load(string.format(
+                            'model/%s_preproc_params.t7', config.id))
   for t = 1, N, batch_size do
     if t + batch_size - 1 > N then
       batch_size = N - t + 1
@@ -332,12 +344,17 @@ gen_predictions = function(model, images)
     num_batches = num_batches + 1
     for i = 1, batch_size do
       local fname = images[t + i - 1]
-      local img = test_jitter(base_img_dir .. '/test/' .. fname)
-      inputs[i]:copy(img)
+      local imgs = test_jitter(base_img_dir .. '/test/' .. fname)
+      inputs:narrow(1, 1 + TEST_JITTER_SZ*(i-1), TEST_JITTER_SZ):copy(imgs)
     end
     inputs = preprocess(inputs, preprocess_params)
     local output = model:forward(inputs)
-    preds:narrow(1, t, batch_size):copy(output:narrow(1, 1, batch_size))
+    for i = 1, batch_size do
+      local current_preds = output:narrow(1, 
+                            1 + TEST_JITTER_SZ*(i-1), 
+                            TEST_JITTER_SZ):mean(1):reshape(#CLASSES)
+      preds[t + i - 1]:copy(current_preds)
+    end
     collectgarbage()
   end
   if opt.progress then
@@ -372,6 +389,7 @@ write_predictions = function(preds, images)
   file:close()
   os.execute('zip ' .. fname .. '.zip ' .. fname)
   os.execute('rm ' .. fname )
+  os.execute('aws s3 sync result ' .. AWS_SYNC_DIR)
 end
 
 sample_image = function(arg)
@@ -420,13 +438,18 @@ random_jitter = function(fname)
       resize_y = INPUT_SZ
     }
   end
+  local rotation = 2 * math.pi * (math.random(4) - 1) / 4
+  local hflip = math.random() < 0.5
   return sample_image{
     fname = fname, 
     resize_x = INPUT_SZ, 
-    resize_y = INPUT_SZ
+    resize_y = INPUT_SZ, 
+    rotate = rotation, 
+    hflip = hflip
   }
 end
 
+TEST_JITTER_SZ = 8
 test_jitter = function(fname, jitter)
   local jitter = config.test_jitter or jitter or false
   if not jitter then
@@ -456,7 +479,7 @@ test_jitter = function(fname, jitter)
   return result
 end
 
-local x = test_jitter('data/test/100.jpg', true)
-print(x:size())
-local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=4}
-image.saveJPG('img/test-jitter.jpg', image_tile)
+-- local x = test_jitter('data/test/100.jpg', true)
+-- print(x:size())
+-- local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=4}
+-- image.saveJPG('img/test-jitter.jpg', image_tile)

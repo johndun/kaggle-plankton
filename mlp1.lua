@@ -35,20 +35,22 @@ config = {
   momentum = 0.9, 
   batch_size = 32, 
   model_seed = opt.s0, 
-  train_jitter = false, 
-  test_jitter = false, 
   early_stop = 1, 
   evaluate_every = 1, 
   s3_sync = true, 
-  test_jitter = false
+  test_jitter = false, 
+  train_jitter = false
 }
+
+if not config.test_jitter then
+  TEST_JITTER_SZ = 1
+end
 
 local learning_rates = {1.0, 0.1}
 local seeds = {opt.s1, opt.s2}
-local epochs = {20, 10}
+local epochs = {1, 1}
 local val_prop = 0.1
 local model, criterion = create_model()
-
 epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
 
 local model, criterion = create_model()
