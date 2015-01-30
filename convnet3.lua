@@ -8,16 +8,7 @@ local function create_model()
   torch.manualSeed(config.model_seed)
   local model = nn.Sequential()
   model:add(nn.SpatialZeroPadding(1, 1, 1, 1))
-  model:add(nn.SpatialConvolutionMM(1, 32, 3, 3, 1, 1))
-  model:add(nn.ReLU())
-  model:add(nn.SpatialMaxPooling(2, 2))
-  model:add(nn.Dropout(0.25))
-  
-  model:add(nn.SpatialZeroPadding(1, 1, 1, 1))
-  model:add(nn.SpatialConvolutionMM(32, 64, 3, 3, 1, 1))
-  model:add(nn.ReLU())
-  model:add(nn.SpatialZeroPadding(1, 1, 1, 1))
-  model:add(nn.SpatialConvolutionMM(64, 64, 3, 3, 1, 1))
+  model:add(nn.SpatialConvolutionMM(1, 64, 3, 3, 1, 1))
   model:add(nn.ReLU())
   model:add(nn.SpatialMaxPooling(2, 2))
   model:add(nn.Dropout(0.25))
@@ -99,21 +90,21 @@ local seeds = {opt.s1, opt.s2, opt.s3}
 local epochs = {100, 100, 50}
 local val_prop = 0.1
 local model, criterion = create_model()
-local parameters, gradParameters = model:getParameters()
-print(parameters:size())
-local input = torch.Tensor(config.batch_size,
-                           NUM_COLORS, 
-                           INPUT_SZ, 
-                           INPUT_SZ):cuda()
-local output = model:forward(input)
-print(output:size())
+-- local parameters, gradParameters = model:getParameters()
+-- print(parameters:size())
+-- local input = torch.Tensor(config.batch_size,
+                           -- NUM_COLORS, 
+                           -- INPUT_SZ, 
+                           -- INPUT_SZ):cuda()
+-- local output = model:forward(input)
+-- print(output:size())
 
--- epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
+epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
 
--- local model, criterion = create_model()
--- model = train(model, criterion, learning_rates, seeds, epochs)
+local model, criterion = create_model()
+model = train(model, criterion, learning_rates, seeds, epochs)
 
--- local test_images = get_test_image_list(TEST_DECODE_FNAME)
--- local model = torch.load('model/' .. config.id .. '.model')
--- local preds = gen_predictions(model, test_images)
--- write_predictions(preds, test_images)
+local test_images = get_test_image_list(TEST_DECODE_FNAME)
+local model = torch.load('model/' .. config.id .. '.model')
+local preds = gen_predictions(model, test_images)
+write_predictions(preds, test_images)

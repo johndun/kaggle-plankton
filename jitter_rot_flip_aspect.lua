@@ -64,8 +64,8 @@ test_jitter = function(fname, jitter)
   return result
 end
 
-require './util.lua'
-local x = test_jitter('data/test/100.jpg', true)
-print(x:size())
-local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=8}
-image.saveJPG('img/test-jitter.jpg', image_tile)
+-- require './util.lua'
+-- local x = test_jitter('data/test/100.jpg', true)
+-- print(x:size())
+-- local image_tile = image.toDisplayTensor{input=x, padding=4, nrow=8}
+-- image.saveJPG('img/test-jitter.jpg', image_tile)
