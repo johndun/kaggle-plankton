@@ -17,8 +17,10 @@ random_jitter = function(fname)
   return sample_image{
     fname = fname, 
     rotate = rotation * 2 * math.pi / 4, 
-    resize_x = math.floor(x_scale * INPUT_SZ), 
-    resize_y = math.floor(y_scale * INPUT_SZ), 
+    crp_sz_x = x_scale, 
+    crp_off_x = (1 - x_scale) / 2, 
+    crp_sz_y = y_scale, 
+    crp_off_y = (1 - y_scale) / 2, 
     hflip    = hflip, 
     out_w    = INPUT_SZ, 
     out_h    = INPUT_SZ
