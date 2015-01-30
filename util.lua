@@ -95,7 +95,8 @@ save_and_sync = function(str, x, sync)
   local sync = sync or false
   torch.save(str, x)
   if sync then
-    os.execute('aws s3 sync model ' .. AWS_SYNC_DIR)
+    os.execute('aws s3 sync model ' .. 
+               AWS_SYNC_DIR .. ' --quiet')
   end
 end
 
@@ -389,7 +390,8 @@ write_predictions = function(preds, images)
   file:close()
   os.execute('zip ' .. fname .. '.zip ' .. fname)
   os.execute('rm ' .. fname )
-  os.execute('aws s3 sync result ' .. AWS_SYNC_DIR)
+  os.execute('aws s3 sync result ' .. 
+             AWS_SYNC_DIR .. ' --quiet')
 end
 
 sample_image = function(arg)
