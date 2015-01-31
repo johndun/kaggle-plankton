@@ -90,7 +90,7 @@ local seeds = {opt.s1, opt.s2, opt.s3}
 -- local epochs = {100, 50, 50}
 local epochs = {61, 9, 20}
 local val_prop = 0.1
-local model, criterion = create_model()
+-- local model, criterion = create_model()
 -- local parameters, gradParameters = model:getParameters()
 -- print(parameters:size())
 -- local input = torch.Tensor(config.batch_size,
