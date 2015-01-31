@@ -1,0 +1,25 @@
+
+ 32
+  1
+ 48
+ 48
+[torch.LongStorage of size 4]
+
+[0m
+### Train using full training set[0m	
+[0m### Calculating parameters for global contrast normalization[0m	
+[0m
+### Training at learning rate 1: 1.5[0m	
+[0m### Number of model parameters: 10540537[0m	
+[0m
+Training epoch 1[0m	
+[0mFinal learning rate: 1.5[0m	
+[0mAccuracy on training set: 0.080102848101266[0m	
+[0mLoss on training set:     4.315769500946[0m	
+[0m
+Training epoch 2[0m	
+[0mFinal learning rate: 1.5[0m	
+[0mAccuracy on training set: 0.15361286919831[0m	
+[0mLoss on training set:     3.6192120118027[0m	
+[0m
+Training epoch 3[0m	

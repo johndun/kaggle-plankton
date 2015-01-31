@@ -1,15 +1,11 @@
 Initial setup for running on EC2 AMI: 
 ami-6238470a
 
-aws cli: 
-
+    ssh -i cuda-private-key.pem ubuntu@<ip>
+    git clone https://github.com/johndun/kaggle-plankton
+    cd kaggle-plankton
     sudo pip install awscli
     aws configure
-
-R:
-
     sudo apt-get install r-base
+    bash initial_setup.sh
 
-Initialize model from S3 bucket:
-
-    aws s3 cp s3://

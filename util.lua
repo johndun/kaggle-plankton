@@ -236,7 +236,7 @@ validate = function(model, criterion, learning_rates, seeds, epochs, val_prop)
   config.id = config.id .. '_val'
   local train_files, test_files, train_labels, test_labels = 
         prepare_val_meta(val_prop)
-  calculate_preproc_params(train_files, config.id) -- eventually will need to account for the effect of jittering
+  calculate_preproc_params(train_files, config.id)
   for i = 1, #learning_rates do
     print(string.format('\n### Training at learning rate %s: %s', 
                         i, learning_rates[i]))
@@ -279,7 +279,7 @@ test = function(model, criterion, files, labels)
   local batch_size = config.batch_size or 12
   local inputs = torch.Tensor(batch_size, NUM_COLORS, INPUT_SZ, INPUT_SZ):cuda()
   
-  batch_size = math.floor(batch_size / TEST_JITTER_SZ)
+  batch_size = math.floor(batch_size / VAL_JITTER_SZ)
   local targets = torch.Tensor(batch_size, #CLASSES):cuda()
 
   local num_batches = 0
@@ -296,8 +296,8 @@ test = function(model, criterion, files, labels)
     targets:zero()
     for i = 1, batch_size do
       local fname = files[t + i - 1]
-      local imgs = test_jitter(base_img_dir .. '/train/' .. fname)
-      inputs:narrow(1, 1 + TEST_JITTER_SZ*(i-1), TEST_JITTER_SZ):copy(imgs)
+      local imgs = val_jitter(base_img_dir .. '/train/' .. fname)
+      inputs:narrow(1, 1 + VAL_JITTER_SZ*(i-1), VAL_JITTER_SZ):copy(imgs)
       local label = labels[t + i - 1]
       targets[i][label] = 1
     end
@@ -306,8 +306,8 @@ test = function(model, criterion, files, labels)
     local current_loss = 0
     for i = 1, batch_size do
       local preds = output:narrow(1, 
-                    1 + TEST_JITTER_SZ*(i-1), 
-                    TEST_JITTER_SZ):mean(1):reshape(#CLASSES)
+                    1 + VAL_JITTER_SZ*(i-1), 
+                    VAL_JITTER_SZ):exp():mean(1):reshape(#CLASSES)
       confusion:add(preds, targets[i])
       local f = criterion:forward(preds, targets[i])
       current_loss = current_loss + f * #CLASSES
@@ -353,7 +353,7 @@ gen_predictions = function(model, images)
     for i = 1, batch_size do
       local current_preds = output:narrow(1, 
                             1 + TEST_JITTER_SZ*(i-1), 
-                            TEST_JITTER_SZ):mean(1):reshape(#CLASSES)
+                            TEST_JITTER_SZ):exp():mean(1):reshape(#CLASSES)
       preds[t + i - 1]:copy(current_preds)
     end
     collectgarbage()
@@ -361,7 +361,6 @@ gen_predictions = function(model, images)
   if opt.progress then
     xlua.progress(N, N)
   end
-  preds:exp()
   return preds
 end
 
