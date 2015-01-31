@@ -9,3 +9,7 @@ aws cli:
 R:
 
     sudo apt-get install r-base
+
+Initialize model from S3 bucket:
+
+    aws s3 cp s3://

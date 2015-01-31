@@ -87,7 +87,8 @@ end
 
 local learning_rates = {1.5, 0.5, 0.1}
 local seeds = {opt.s1, opt.s2, opt.s3}
-local epochs = {100, 100, 50}
+-- local epochs = {100, 50, 50}
+local epochs = {61, 9, 20}
 local val_prop = 0.1
 local model, criterion = create_model()
 -- local parameters, gradParameters = model:getParameters()
@@ -99,7 +100,7 @@ local model, criterion = create_model()
 -- local output = model:forward(input)
 -- print(output:size())
 
-epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
+-- epochs = validate(model, criterion, learning_rates, seeds, epochs, val_prop)
 
 local model, criterion = create_model()
 model = train(model, criterion, learning_rates, seeds, epochs)
