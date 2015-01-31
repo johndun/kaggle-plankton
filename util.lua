@@ -105,9 +105,10 @@ calculate_preproc_params = function(train_files, id)
   local id = id or config.id
   local params = torch.Tensor(#train_files, 2)
   for i = 1, #train_files do
-    local img = sample_image{fname    = base_img_dir .. '/train/' .. train_files[i], 
-                             resize_x = INPUT_SZ, 
-                             resize_y = INPUT_SZ}
+    local img = image.loadJPG(base_img_dir .. '/train/' .. train_files[i])
+    img = sample_image{src      = img, 
+                       resize_x = INPUT_SZ, 
+                       resize_y = INPUT_SZ}
     params[i][1] = img:mean()
     params[i][2] = img:std()^2
   end
@@ -395,7 +396,7 @@ write_predictions = function(preds, images)
 end
 
 sample_image = function(arg)
-  local src       = image.loadJPG(arg.fname):add(-1):mul(-1):abs()
+  local src       = arg.src
   local hflip     = arg.hflip or false
   local rotate    = arg.rotate or false
   local resize_x  = arg.resize_x or src:size(3)

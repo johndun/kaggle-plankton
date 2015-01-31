@@ -1,7 +1,7 @@
 require 'torch'
 require 'nn'
 require './util'
-require './jitter_rot_flip_aspect'
+require './jitter'
 require 'cunn'
 
 local function create_model()
