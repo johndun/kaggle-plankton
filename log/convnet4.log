@@ -5,3 +5,724 @@
 [0m### Number of model parameters: 10540537[0m	
 [0m
 Training epoch 1[0m	
+[0mFinal learning rate: 0.99914772698888[0m	
+[0mAccuracy on training set: 0.063672332942556[0m	
+[0mLoss on training set:     4.3134147494743[0m	
+[0mAccuracy on test set:     0.060975609756098[0m	
+[0mLoss on test set:         4.2164019276848[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 2[0m	
+[0mFinal learning rate: 0.99829690547925[0m	
+[0mAccuracy on training set: 0.073197538100821[0m	
+[0mLoss on training set:     4.1788678265724[0m	
+[0mAccuracy on test set:     0.10711931443639[0m	
+[0mLoss on test set:         4.1476756795083[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 3[0m	
+[0mFinal learning rate: 0.99744753176621[0m	
+[0mAccuracy on training set: 0.1182590855803[0m	
+[0mLoss on training set:     3.9104411070762[0m	
+[0mAccuracy on test set:     0.13941990771259[0m	
+[0mLoss on test set:         3.7567992436243[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 4[0m	
+[0mFinal learning rate: 0.99659960215744[0m	
+[0mAccuracy on training set: 0.13115474794842[0m	
+[0mLoss on training set:     3.7011932429507[0m	
+[0mAccuracy on test set:     0.13909030982202[0m	
+[0mLoss on test set:         3.6352453088595[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 5[0m	
+[0mFinal learning rate: 0.99575311297317[0m	
+[0mAccuracy on training set: 0.15383206330598[0m	
+[0mLoss on training set:     3.5627411113438[0m	
+[0mAccuracy on test set:     0.19512195121951[0m	
+[0mLoss on test set:         3.3655857933097[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 6[0m	
+[0mFinal learning rate: 0.99490806054613[0m	
+[0mAccuracy on training set: 0.2104703985932[0m	
+[0mLoss on training set:     3.2654923912037[0m	
+[0mAccuracy on test set:     0.27653263019117[0m	
+[0mLoss on test set:         2.8730802180845[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 7[0m	
+[0mFinal learning rate: 0.99406444122147[0m	
+[0mAccuracy on training set: 0.25190504103165[0m	
+[0mLoss on training set:     2.9570609876823[0m	
+[0mAccuracy on test set:     0.29960448253131[0m	
+[0mLoss on test set:         2.6806750574231[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 8[0m	
+[0mFinal learning rate: 0.99322225135674[0m	
+[0mAccuracy on training set: 0.27747655334115[0m	
+[0mLoss on training set:     2.7737587233001[0m	
+[0mAccuracy on test set:     0.34344100197759[0m	
+[0mLoss on test set:         2.459711168737[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 9[0m	
+[0mFinal learning rate: 0.99238148732183[0m	
+[0mAccuracy on training set: 0.30114302461899[0m	
+[0mLoss on training set:     2.6281167252594[0m	
+[0mAccuracy on test set:     0.34838497033619[0m	
+[0mLoss on test set:         2.3692993572453[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 10[0m	
+[0mFinal learning rate: 0.99154214549889[0m	
+[0mAccuracy on training set: 0.32817995310668[0m	
+[0mLoss on training set:     2.5129268828349[0m	
+[0mAccuracy on test set:     0.38793671720501[0m	
+[0mLoss on test set:         2.2439027422621[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 11[0m	
+[0mFinal learning rate: 0.99070422228233[0m	
+[0mAccuracy on training set: 0.34957502930832[0m	
+[0mLoss on training set:     2.3915619913069[0m	
+[0mAccuracy on test set:     0.38727752142386[0m	
+[0mLoss on test set:         2.1766946960879[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 12[0m	
+[0mFinal learning rate: 0.98986771407869[0m	
+[0mAccuracy on training set: 0.37140973036342[0m	
+[0mLoss on training set:     2.2961722054188[0m	
+[0mAccuracy on test set:     0.43539881344759[0m	
+[0mLoss on test set:         2.0399109396827[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 13[0m	
+[0mFinal learning rate: 0.98903261730669[0m	
+[0mAccuracy on training set: 0.38654015240328[0m	
+[0mLoss on training set:     2.2208556150373[0m	
+[0mAccuracy on test set:     0.47033618984838[0m	
+[0mLoss on test set:         1.9371976558263[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 14[0m	
+[0mFinal learning rate: 0.98819892839708[0m	
+[0mAccuracy on training set: 0.40592028135991[0m	
+[0mLoss on training set:     2.1470274931171[0m	
+[0mAccuracy on test set:     0.45912986156889[0m	
+[0mLoss on test set:         1.8614101677688[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 15[0m	
+[0mFinal learning rate: 0.98736664379267[0m	
+[0mAccuracy on training set: 0.41742379835873[0m	
+[0mLoss on training set:     2.082801265106[0m	
+[0mAccuracy on test set:     0.48088332234674[0m	
+[0mLoss on test set:         1.8419582237741[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 16[0m	
+[0mFinal learning rate: 0.98653575994823[0m	
+[0mAccuracy on training set: 0.4322245017585[0m	
+[0mLoss on training set:     2.0190760076978[0m	
+[0mAccuracy on test set:     0.49769281476599[0m	
+[0mLoss on test set:         1.7360108174608[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 17[0m	
+[0mFinal learning rate: 0.98570627333044[0m	
+[0mAccuracy on training set: 0.44501025791325[0m	
+[0mLoss on training set:     1.9730039327858[0m	
+[0mAccuracy on test set:     0.5049439683586[0m	
+[0mLoss on test set:         1.6950721384956[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 18[0m	
+[0mFinal learning rate: 0.98487818041786[0m	
+[0mAccuracy on training set: 0.45387602579132[0m	
+[0mLoss on training set:     1.9290679303169[0m	
+[0mAccuracy on test set:     0.49571522742254[0m	
+[0mLoss on test set:         1.7215001090992[0m	
+[0m
+Training epoch 19[0m	
+[0mFinal learning rate: 0.9840514777009[0m	
+[0mAccuracy on training set: 0.46559935521688[0m	
+[0mLoss on training set:     1.8825355410665[0m	
+[0mAccuracy on test set:     0.5161502966381[0m	
+[0mLoss on test set:         1.6865005428331[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 20[0m	
+[0mFinal learning rate: 0.98322616168171[0m	
+[0mAccuracy on training set: 0.47208382180539[0m	
+[0mLoss on training set:     1.8524983364364[0m	
+[0mAccuracy on test set:     0.54317732366513[0m	
+[0mLoss on test set:         1.5799112547706[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 21[0m	
+[0mFinal learning rate: 0.98240222887418[0m	
+[0mAccuracy on training set: 0.48252491207503[0m	
+[0mLoss on training set:     1.8141992872456[0m	
+[0mAccuracy on test set:     0.54581410678972[0m	
+[0mLoss on test set:         1.554345351556[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 22[0m	
+[0mFinal learning rate: 0.98157967580386[0m	
+[0mAccuracy on training set: 0.49274618991794[0m	
+[0mLoss on training set:     1.7768612791209[0m	
+[0mAccuracy on test set:     0.54449571522742[0m	
+[0mLoss on test set:         1.5591940824126[0m	
+[0m
+Training epoch 23[0m	
+[0mFinal learning rate: 0.98075849900796[0m	
+[0mAccuracy on training set: 0.50062280187573[0m	
+[0mLoss on training set:     1.7414278797658[0m	
+[0mAccuracy on test set:     0.55306526038233[0m	
+[0mLoss on test set:         1.5010757506262[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 24[0m	
+[0mFinal learning rate: 0.97993869503524[0m	
+[0mAccuracy on training set: 0.5056784876905[0m	
+[0mLoss on training set:     1.7223517134085[0m	
+[0mAccuracy on test set:     0.55636123928807[0m	
+[0mLoss on test set:         1.5024327827613[0m	
+[0m
+Training epoch 25[0m	
+[0mFinal learning rate: 0.97912026044599[0m	
+[0mAccuracy on training set: 0.5116866940211[0m	
+[0mLoss on training set:     1.6803773853203[0m	
+[0mAccuracy on test set:     0.5771259063942[0m	
+[0mLoss on test set:         1.4097648902857[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 26[0m	
+[0mFinal learning rate: 0.97830319181199[0m	
+[0mAccuracy on training set: 0.520699003517[0m	
+[0mLoss on training set:     1.6656612125984[0m	
+[0mAccuracy on test set:     0.58141067897165[0m	
+[0mLoss on test set:         1.4170347081514[0m	
+[0m
+Training epoch 27[0m	
+[0mFinal learning rate: 0.97748748571646[0m	
+[0mAccuracy on training set: 0.52527842907386[0m	
+[0mLoss on training set:     1.6295174399892[0m	
+[0mAccuracy on test set:     0.58569545154911[0m	
+[0mLoss on test set:         1.4060126123428[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 28[0m	
+[0mFinal learning rate: 0.976673138754[0m	
+[0mAccuracy on training set: 0.52967467760844[0m	
+[0mLoss on training set:     1.6128773254857[0m	
+[0mAccuracy on test set:     0.59393539881345[0m	
+[0mLoss on test set:         1.3727006836586[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 29[0m	
+[0mFinal learning rate: 0.97586014753054[0m	
+[0mAccuracy on training set: 0.53535316529894[0m	
+[0mLoss on training set:     1.5948007858952[0m	
+[0mAccuracy on test set:     0.59525379037574[0m	
+[0mLoss on test set:         1.3645233828196[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 30[0m	
+[0mFinal learning rate: 0.97504850866331[0m	
+[0mAccuracy on training set: 0.54268024618992[0m	
+[0mLoss on training set:     1.5659182712988[0m	
+[0mAccuracy on test set:     0.60646011865524[0m	
+[0mLoss on test set:         1.3590701326588[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 31[0m	
+[0mFinal learning rate: 0.97423821878078[0m	
+[0mAccuracy on training set: 0.54476846424385[0m	
+[0mLoss on training set:     1.5486323998467[0m	
+[0mAccuracy on test set:     0.61470006591958[0m	
+[0mLoss on test set:         1.3054614177498[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 32[0m	
+[0mFinal learning rate: 0.97342927452263[0m	
+[0mAccuracy on training set: 0.55400058616647[0m	
+[0mLoss on training set:     1.5246947836136[0m	
+[0mAccuracy on test set:     0.61601845748187[0m	
+[0mLoss on test set:         1.3007739580919[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 33[0m	
+[0mFinal learning rate: 0.97262167253968[0m	
+[0mAccuracy on training set: 0.55685814771395[0m	
+[0mLoss on training set:     1.5134142060848[0m	
+[0mAccuracy on test set:     0.61470006591958[0m	
+[0mLoss on test set:         1.287966856957[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 34[0m	
+[0mFinal learning rate: 0.97181540949386[0m	
+[0mAccuracy on training set: 0.56469812426729[0m	
+[0mLoss on training set:     1.4887235451234[0m	
+[0mAccuracy on test set:     0.63085036255768[0m	
+[0mLoss on test set:         1.2639365773381[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 35[0m	
+[0mFinal learning rate: 0.97101048205815[0m	
+[0mAccuracy on training set: 0.56506447831184[0m	
+[0mLoss on training set:     1.4731649115681[0m	
+[0mAccuracy on test set:     0.6206328279499[0m	
+[0mLoss on test set:         1.3031255490005[0m	
+[0m
+Training epoch 36[0m	
+[0mFinal learning rate: 0.97020688691657[0m	
+[0mAccuracy on training set: 0.57059642438453[0m	
+[0mLoss on training set:     1.4634712691477[0m	
+[0mAccuracy on test set:     0.64106789716546[0m	
+[0mLoss on test set:         1.2404384587355[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 37[0m	
+[0mFinal learning rate: 0.96940462076407[0m	
+[0mAccuracy on training set: 0.57415005861665[0m	
+[0mLoss on training set:     1.4427415643063[0m	
+[0mAccuracy on test set:     0.63085036255768[0m	
+[0mLoss on test set:         1.2462633645035[0m	
+[0m
+Training epoch 38[0m	
+[0mFinal learning rate: 0.96860368030654[0m	
+[0mAccuracy on training set: 0.58089097303634[0m	
+[0mLoss on training set:     1.4194529118657[0m	
+[0mAccuracy on test set:     0.63249835201055[0m	
+[0mLoss on test set:         1.2574357662766[0m	
+[0m
+Training epoch 39[0m	
+[0mFinal learning rate: 0.96780406226077[0m	
+[0mAccuracy on training set: 0.57971864009379[0m	
+[0mLoss on training set:     1.4148969505957[0m	
+[0mAccuracy on test set:     0.63513513513514[0m	
+[0mLoss on test set:         1.2155391358717[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 40[0m	
+[0mFinal learning rate: 0.96700576335435[0m	
+[0mAccuracy on training set: 0.58964683470106[0m	
+[0mLoss on training set:     1.3902495448376[0m	
+[0mAccuracy on test set:     0.64205669083718[0m	
+[0mLoss on test set:         1.201420479295[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 41[0m	
+[0mFinal learning rate: 0.96620878032567[0m	
+[0mAccuracy on training set: 0.5862031066823[0m	
+[0mLoss on training set:     1.3787513168835[0m	
+[0mAccuracy on test set:     0.65095583388266[0m	
+[0mLoss on test set:         1.189201316104[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 42[0m	
+[0mFinal learning rate: 0.96541310992387[0m	
+[0mAccuracy on training set: 0.59338364595545[0m	
+[0mLoss on training set:     1.3691945995891[0m	
+[0mAccuracy on test set:     0.66381015161503[0m	
+[0mLoss on test set:         1.1675571875795[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 43[0m	
+[0mFinal learning rate: 0.96461874890878[0m	
+[0mAccuracy on training set: 0.59437280187573[0m	
+[0mLoss on training set:     1.3567302578663[0m	
+[0mAccuracy on test set:     0.64337508239947[0m	
+[0mLoss on test set:         1.1817195841134[0m	
+[0m
+Training epoch 44[0m	
+[0mFinal learning rate: 0.96382569405088[0m	
+[0mAccuracy on training set: 0.59887895662368[0m	
+[0mLoss on training set:     1.3403367429059[0m	
+[0mAccuracy on test set:     0.65392221489782[0m	
+[0mLoss on test set:         1.1536566376731[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 45[0m	
+[0mFinal learning rate: 0.96303394213129[0m	
+[0mAccuracy on training set: 0.60067409144197[0m	
+[0mLoss on training set:     1.3289882662643[0m	
+[0mAccuracy on test set:     0.64864864864865[0m	
+[0mLoss on test set:         1.1628384482105[0m	
+[0m
+Training epoch 46[0m	
+[0mFinal learning rate: 0.96224348994167[0m	
+[0mAccuracy on training set: 0.60477725674091[0m	
+[0mLoss on training set:     1.320791231881[0m	
+[0mAccuracy on test set:     0.65688859591299[0m	
+[0mLoss on test set:         1.1614476252551[0m	
+[0m
+Training epoch 47[0m	
+[0mFinal learning rate: 0.96145433428421[0m	
+[0mAccuracy on training set: 0.61005275498241[0m	
+[0mLoss on training set:     1.3068586171245[0m	
+[0mAccuracy on test set:     0.65853658536585[0m	
+[0mLoss on test set:         1.130076608298[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 48[0m	
+[0mFinal learning rate: 0.96066647197159[0m	
+[0mAccuracy on training set: 0.60935668229777[0m	
+[0mLoss on training set:     1.2972102006619[0m	
+[0mAccuracy on test set:     0.66710613052076[0m	
+[0mLoss on test set:         1.1270655823431[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 49[0m	
+[0mFinal learning rate: 0.95987989982693[0m	
+[0mAccuracy on training set: 0.61770955451348[0m	
+[0mLoss on training set:     1.2740918796663[0m	
+[0mAccuracy on test set:     0.6704021094265[0m	
+[0mLoss on test set:         1.1133510980722[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 50[0m	
+[0mFinal learning rate: 0.95909461468374[0m	
+[0mAccuracy on training set: 0.61470545134818[0m	
+[0mLoss on training set:     1.278327511463[0m	
+[0mAccuracy on test set:     0.66084377059987[0m	
+[0mLoss on test set:         1.1254883744198[0m	
+[0m
+Training epoch 51[0m	
+[0mFinal learning rate: 0.95831061338587[0m	
+[0mAccuracy on training set: 0.6204572098476[0m	
+[0mLoss on training set:     1.2618470437249[0m	
+[0mAccuracy on test set:     0.66611733684904[0m	
+[0mLoss on test set:         1.1104534802487[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 52[0m	
+[0mFinal learning rate: 0.95752789278752[0m	
+[0mAccuracy on training set: 0.62448710433763[0m	
+[0mLoss on training set:     1.2479127495171[0m	
+[0mAccuracy on test set:     0.67139090309822[0m	
+[0mLoss on test set:         1.0775291124658[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 53[0m	
+[0mFinal learning rate: 0.95674644975311[0m	
+[0mAccuracy on training set: 0.62620896834701[0m	
+[0mLoss on training set:     1.2357034049576[0m	
+[0mAccuracy on test set:     0.67270929466051[0m	
+[0mLoss on test set:         1.0837975473745[0m	
+[0m
+Training epoch 54[0m	
+[0mFinal learning rate: 0.95596628115733[0m	
+[0mAccuracy on training set: 0.62650205158265[0m	
+[0mLoss on training set:     1.2291553103341[0m	
+[0mAccuracy on test set:     0.6753460777851[0m	
+[0mLoss on test set:         1.0826946266665[0m	
+[0m
+Training epoch 55[0m	
+[0mFinal learning rate: 0.95518738388503[0m	
+[0mAccuracy on training set: 0.62899325908558[0m	
+[0mLoss on training set:     1.2254932580493[0m	
+[0mAccuracy on test set:     0.67963085036256[0m	
+[0mLoss on test set:         1.0740388540616[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 56[0m	
+[0mFinal learning rate: 0.95440975483122[0m	
+[0mAccuracy on training set: 0.63104484173505[0m	
+[0mLoss on training set:     1.2162724299076[0m	
+[0mAccuracy on test set:     0.67303889255109[0m	
+[0mLoss on test set:         1.0794388913419[0m	
+[0m
+Training epoch 57[0m	
+[0mFinal learning rate: 0.953633390901[0m	
+[0mAccuracy on training set: 0.63558763188746[0m	
+[0mLoss on training set:     1.1997796246588[0m	
+[0mAccuracy on test set:     0.68457481872116[0m	
+[0mLoss on test set:         1.0575357952809[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 58[0m	
+[0mFinal learning rate: 0.95285828900954[0m	
+[0mAccuracy on training set: 0.63657678780774[0m	
+[0mLoss on training set:     1.1945291883465[0m	
+[0mAccuracy on test set:     0.67996044825313[0m	
+[0mLoss on test set:         1.0801105124812[0m	
+[0m
+Training epoch 59[0m	
+[0mFinal learning rate: 0.95208444608203[0m	
+[0mAccuracy on training set: 0.64372069167644[0m	
+[0mLoss on training set:     1.1774920228031[0m	
+[0mAccuracy on test set:     0.66743572841134[0m	
+[0mLoss on test set:         1.0742684268107[0m	
+[0m
+Training epoch 60[0m	
+[0mFinal learning rate: 0.95131185905363[0m	
+[0mAccuracy on training set: 0.64119284876905[0m	
+[0mLoss on training set:     1.1725848828664[0m	
+[0mAccuracy on test set:     0.68885959129862[0m	
+[0mLoss on test set:         1.0563097926898[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 61[0m	
+[0mFinal learning rate: 0.95054052486947[0m	
+[0mAccuracy on training set: 0.64361078546307[0m	
+[0mLoss on training set:     1.1670006477156[0m	
+[0mAccuracy on test set:     0.68424522083059[0m	
+[0mLoss on test set:         1.0469661320041[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 62[0m	
+[0mFinal learning rate: 0.94977044048453[0m	
+[0mAccuracy on training set: 0.64390386869871[0m	
+[0mLoss on training set:     1.163002585166[0m	
+[0mAccuracy on test set:     0.68622280817403[0m	
+[0mLoss on test set:         1.0302155784203[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 63[0m	
+[0mFinal learning rate: 0.94900160286371[0m	
+[0mAccuracy on training set: 0.65031506447831[0m	
+[0mLoss on training set:     1.1462664127152[0m	
+[0mAccuracy on test set:     0.68721160184575[0m	
+[0mLoss on test set:         1.0175106604795[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 64[0m	
+[0mFinal learning rate: 0.94823400898167[0m	
+[0mAccuracy on training set: 0.6468347010551[0m	
+[0mLoss on training set:     1.1512903224787[0m	
+[0mAccuracy on test set:     0.69545154911009[0m	
+[0mLoss on test set:         1.0491852069608[0m	
+[0m
+Training epoch 65[0m	
+[0mFinal learning rate: 0.9474676558229[0m	
+[0mAccuracy on training set: 0.6547113130129[0m	
+[0mLoss on training set:     1.1243102924515[0m	
+[0mAccuracy on test set:     0.69446275543837[0m	
+[0mLoss on test set:         1.0122973038517[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 66[0m	
+[0mFinal learning rate: 0.9467025403816[0m	
+[0mAccuracy on training set: 0.65562719812427[0m	
+[0mLoss on training set:     1.1275671886344[0m	
+[0mAccuracy on test set:     0.70039551746869[0m	
+[0mLoss on test set:         1.0060946328438[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 67[0m	
+[0mFinal learning rate: 0.94593865966168[0m	
+[0mAccuracy on training set: 0.65621336459555[0m	
+[0mLoss on training set:     1.1153945682766[0m	
+[0mAccuracy on test set:     0.69512195121951[0m	
+[0mLoss on test set:         1.0024304480545[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 68[0m	
+[0mFinal learning rate: 0.94517601067671[0m	
+[0mAccuracy on training set: 0.65379542790152[0m	
+[0mLoss on training set:     1.1173029941073[0m	
+[0mAccuracy on test set:     0.69709953856295[0m	
+[0mLoss on test set:         0.99895896390917[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 69[0m	
+[0mFinal learning rate: 0.94441459044989[0m	
+[0mAccuracy on training set: 0.66376025791325[0m	
+[0mLoss on training set:     1.0969493186938[0m	
+[0mAccuracy on test set:     0.70336189848385[0m	
+[0mLoss on test set:         0.99207199804704[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 70[0m	
+[0mFinal learning rate: 0.943654396014[0m	
+[0mAccuracy on training set: 0.66485932004689[0m	
+[0mLoss on training set:     1.0965095492146[0m	
+[0mAccuracy on test set:     0.69644034278181[0m	
+[0mLoss on test set:         0.96436960135911[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 71[0m	
+[0mFinal learning rate: 0.94289542441137[0m	
+[0mAccuracy on training set: 0.66401670574443[0m	
+[0mLoss on training set:     1.0878934075912[0m	
+[0mAccuracy on test set:     0.71160184574819[0m	
+[0mLoss on test set:         0.97260912202833[0m	
+[0m
+Training epoch 72[0m	
+[0mFinal learning rate: 0.94213767269384[0m	
+[0mAccuracy on training set: 0.66518903868699[0m	
+[0mLoss on training set:     1.0867725147577[0m	
+[0mAccuracy on test set:     0.70039551746869[0m	
+[0mLoss on test set:         0.99191624790509[0m	
+[0m
+Training epoch 73[0m	
+[0mFinal learning rate: 0.94138113792269[0m	
+[0mAccuracy on training set: 0.66698417350528[0m	
+[0mLoss on training set:     1.0759852444475[0m	
+[0mAccuracy on test set:     0.7152274225445[0m	
+[0mLoss on test set:         0.9609855149649[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 74[0m	
+[0mFinal learning rate: 0.94062581716868[0m	
+[0mAccuracy on training set: 0.66830304806565[0m	
+[0mLoss on training set:     1.0693996393352[0m	
+[0mAccuracy on test set:     0.71094264996704[0m	
+[0mLoss on test set:         0.95929197691755[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 75[0m	
+[0mFinal learning rate: 0.93987170751192[0m	
+[0mAccuracy on training set: 0.67006154747948[0m	
+[0mLoss on training set:     1.0568518846955[0m	
+[0mAccuracy on test set:     0.70929466051417[0m	
+[0mLoss on test set:         0.97507027068885[0m	
+[0m
+Training epoch 76[0m	
+[0mFinal learning rate: 0.93911880604191[0m	
+[0mAccuracy on training set: 0.67108733880422[0m	
+[0mLoss on training set:     1.0518392875645[0m	
+[0mAccuracy on test set:     0.71292023731048[0m	
+[0mLoss on test set:         0.95857508789402[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 77[0m	
+[0mFinal learning rate: 0.93836710985745[0m	
+[0mAccuracy on training set: 0.67412807737397[0m	
+[0mLoss on training set:     1.0498958184037[0m	
+[0mAccuracy on test set:     0.71621621621622[0m	
+[0mLoss on test set:         0.95150063355611[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 78[0m	
+[0mFinal learning rate: 0.93761661606662[0m	
+[0mAccuracy on training set: 0.67592321219226[0m	
+[0mLoss on training set:     1.0430689102788[0m	
+[0mAccuracy on test set:     0.70995385629532[0m	
+[0mLoss on test set:         0.95005035380909[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 79[0m	
+[0mFinal learning rate: 0.93686732178676[0m	
+[0mAccuracy on training set: 0.67742526377491[0m	
+[0mLoss on training set:     1.0393106267181[0m	
+[0mAccuracy on test set:     0.71127224785761[0m	
+[0mLoss on test set:         0.95403119363576[0m	
+[0m
+Training epoch 80[0m	
+[0mFinal learning rate: 0.93611922414439[0m	
+[0mAccuracy on training set: 0.67940357561547[0m	
+[0mLoss on training set:     1.0345134365163[0m	
+[0mAccuracy on test set:     0.72116018457482[0m	
+[0mLoss on test set:         0.92349072360068[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 81[0m	
+[0mFinal learning rate: 0.93537232027522[0m	
+[0mAccuracy on training set: 0.6803560961313[0m	
+[0mLoss on training set:     1.0268787089097[0m	
+[0mAccuracy on test set:     0.70435069215557[0m	
+[0mLoss on test set:         0.96426575651985[0m	
+[0m
+Training epoch 82[0m	
+[0mFinal learning rate: 0.93462660732411[0m	
+[0mAccuracy on training set: 0.6784876905041[0m	
+[0mLoss on training set:     1.0272041574565[0m	
+[0mAccuracy on test set:     0.71423862887278[0m	
+[0mLoss on test set:         0.93252836766795[0m	
+[0m
+Training epoch 83[0m	
+[0mFinal learning rate: 0.93388208244498[0m	
+[0mAccuracy on training set: 0.67889067995311[0m	
+[0mLoss on training set:     1.0195833227604[0m	
+[0mAccuracy on test set:     0.70731707317073[0m	
+[0mLoss on test set:         0.96351571073056[0m	
+[0m
+Training epoch 84[0m	
+[0mFinal learning rate: 0.93313874280083[0m	
+[0mAccuracy on training set: 0.68713364595545[0m	
+[0mLoss on training set:     1.0098660565527[0m	
+[0mAccuracy on test set:     0.70830586684245[0m	
+[0mLoss on test set:         0.94958261674153[0m	
+[0m
+Training epoch 85[0m	
+[0mFinal learning rate: 0.9323965855637[0m	
+[0mAccuracy on training set: 0.68163833528722[0m	
+[0mLoss on training set:     1.0103198053096[0m	
+[0mAccuracy on test set:     0.72116018457482[0m	
+[0mLoss on test set:         0.92913030160745[0m	
+[0m
+Training epoch 86[0m	
+[0mFinal learning rate: 0.9316556079146[0m	
+[0mAccuracy on training set: 0.69189624853458[0m	
+[0mLoss on training set:     0.99448083961276[0m	
+[0mAccuracy on test set:     0.7152274225445[0m	
+[0mLoss on test set:         0.92679542743703[0m	
+[0m
+Training epoch 87[0m	
+[0mFinal learning rate: 0.9309158070435[0m	
+[0mAccuracy on training set: 0.68856242672919[0m	
+[0mLoss on training set:     0.99060109578338[0m	
+[0mAccuracy on test set:     0.71555702043507[0m	
+[0mLoss on test set:         0.92242302560651[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 88[0m	
+[0mFinal learning rate: 0.93017718014927[0m	
+[0mAccuracy on training set: 0.6875[0m	
+[0mLoss on training set:     0.99230634634233[0m	
+[0mAccuracy on test set:     0.71456822676335[0m	
+[0mLoss on test set:         0.92684098356857[0m	
+[0m
+Training epoch 89[0m	
+[0mFinal learning rate: 0.92943972443971[0m	
+[0mAccuracy on training set: 0.6920427901524[0m	
+[0mLoss on training set:     0.97872632221376[0m	
+[0mAccuracy on test set:     0.70797626895188[0m	
+[0mLoss on test set:         0.94337320271025[0m	
+[0m
+Training epoch 90[0m	
+[0mFinal learning rate: 0.92870343713142[0m	
+[0mAccuracy on training set: 0.69479044548652[0m	
+[0mLoss on training set:     0.97430220382192[0m	
+[0mAccuracy on test set:     0.7139090309822[0m	
+[0mLoss on test set:         0.92688946490002[0m	
+[0m
+Training epoch 91[0m	
+[0mFinal learning rate: 0.92796831544984[0m	
+[0mAccuracy on training set: 0.69427754982415[0m	
+[0mLoss on training set:     0.97267869016339[0m	
+[0mAccuracy on test set:     0.71984179301252[0m	
+[0mLoss on test set:         0.9204275312049[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 92[0m	
+[0mFinal learning rate: 0.92723435662917[0m	
+[0mAccuracy on training set: 0.69669548651817[0m	
+[0mLoss on training set:     0.96825485201039[0m	
+[0mAccuracy on test set:     0.72577455504285[0m	
+[0mLoss on test set:         0.91685808253912[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 93[0m	
+[0mFinal learning rate: 0.92650155791237[0m	
+[0mAccuracy on training set: 0.6950468933177[0m	
+[0mLoss on training set:     0.96469399137755[0m	
+[0mAccuracy on test set:     0.71555702043507[0m	
+[0mLoss on test set:         0.95160154625288[0m	
+[0m
+Training epoch 94[0m	
+[0mFinal learning rate: 0.9257699165511[0m	
+[0mAccuracy on training set: 0.70101846424385[0m	
+[0mLoss on training set:     0.95016933295326[0m	
+[0mAccuracy on test set:     0.71456822676335[0m	
+[0mLoss on test set:         0.90758688106831[0m	
+[0mSaving new model[0m	
+[0m
+Training epoch 95[0m	

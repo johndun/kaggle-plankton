@@ -8,4 +8,5 @@ ami-6238470a
     aws configure
     sudo apt-get install r-base
     bash initial_setup.sh
+    Rscript --vanilla initial_data_processing.r
 
