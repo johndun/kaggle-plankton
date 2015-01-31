@@ -128,6 +128,7 @@ sgd = function(model, criterion, files, labels)
   local confusion = optim.ConfusionMatrix(CLASSES)
   local loss = 0.0
   local N = #files
+--  local N = 256
   local shuffle = torch.randperm(N)
   local batch_size = config.batch_size or 12
   local num_batches = 0
@@ -307,7 +308,7 @@ test = function(model, criterion, files, labels)
     for i = 1, batch_size do
       local preds = output:narrow(1, 
                     1 + VAL_JITTER_SZ*(i-1), 
-                    VAL_JITTER_SZ):exp():mean(1):reshape(#CLASSES)
+                    VAL_JITTER_SZ):exp():mean(1):log():reshape(#CLASSES)
       confusion:add(preds, targets[i])
       local f = criterion:forward(preds, targets[i])
       current_loss = current_loss + f * #CLASSES
