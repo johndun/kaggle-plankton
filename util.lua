@@ -34,14 +34,19 @@ end
 load_test_meta = function()
   local file = io.open(TEST_DECODE_FNAME, 'r')
   local files = {}
+  local features = {}
+  local j = 0
   local skip_head = true
   for line in file:lines() do
     if not skip_head then
-      table.insert(files, line)
+      j = j + 1
+      local row_str = string.split(line, ',')
+      files[j] = row_str[1]
+      features[j] = row_str[2]
     end
     skip_head = false
   end
-  return files
+  return files, features
 end
 
 load_train_meta = function()
@@ -61,38 +66,46 @@ load_train_meta = function()
   local j = 0
   local files = {}
   local labels = {}
+  local features = {}
   for line in file:lines() do
     if not skip_head then
       j = j + 1
       local row_str = string.split(line, ',')
       labels[j] = row_str[1]
       files[j] = row_str[2]
+      features[j] = row_str[3]
     end
     skip_head = false
   end
-  return files, labels
+  return files, labels, features
 end
 
 prepare_val_meta = function(val_prop)
-  local files, labels = load_train_meta()
+  local files, labels, features = load_train_meta()
   
   local train_files = {}
   local test_files = {}
   local train_labels = {}
   local test_labels = {}
+  local train_features = {}
+  local test_features = {}
   local cutoff = math.floor((1 - val_prop) * #files)
   
   for i = 1, #files do
     if i <= cutoff then
       table.insert(train_files, files[i])
       table.insert(train_labels, labels[i])
+      table.insert(train_features, features[i])
     else
       table.insert(test_files, files[i])
       table.insert(test_labels, labels[i])
+      table.insert(test_features, features[i])
     end
   end
   
-  return train_files, test_files, train_labels, test_labels
+  return train_files, test_files, 
+         train_labels, test_labels, 
+         train_features, test_features
 end
 
 save_and_sync = function(str, x, sync)
@@ -192,6 +205,7 @@ training_loop = function(model, criterion,
   print('### Number of model parameters: ' .. parameters:size(1))
   local best_test_loss = config.starting_loss or 1000.
   local evaluate_every = config.evaluate_every or 1
+  local evaluate_start = config.evaluate_start or 1
   local best_epoch = 0
   local epochs_since_best = 0
   for epoch = 1, config.epochs do
@@ -203,7 +217,9 @@ training_loop = function(model, criterion,
           (1 + config.learningRateDecay * config.evalCounter)))
     print('Accuracy on training set: ' .. acc)
     print('Loss on training set:     ' .. loss)
-    if config.eval and epoch % evaluate_every == 0 then
+    if config.eval and 
+       epoch % evaluate_every == 0 and
+       epoch >= evaluate_start then
       model:evaluate()
       local loss, acc = test(model, criterion, test_files, test_labels)
       print('Accuracy on test set:     ' .. acc)
@@ -250,6 +266,9 @@ validate = function(model, criterion, learning_rates, seeds, epochs, val_prop)
     config.train_seed = seeds[i]
     config.epochs = epochs[i]
     config.evalCounter = nil
+    if i > 1 then
+      config.evaluate_start = 1
+    end
     epochs[i], config.starting_loss = training_loop(model, criterion,  
                                                     train_files, train_labels, 
                                                     test_files,  test_labels)
@@ -330,8 +349,9 @@ test = function(model, criterion, files, labels)
   return loss, confusion.totalValid
 end
 
-gen_predictions = function(model, images)
+gen_predictions = function(model)
   print('\n### Generating test predictions')
+  local images = load_test_meta()
   model:evaluate()
   local batch_size = config.batch_size or 12
   local N = #images
@@ -367,7 +387,7 @@ gen_predictions = function(model, images)
   if opt.progress then
     xlua.progress(N, N)
   end
-  return preds
+  return preds, images
 end
 
 write_predictions = function(preds, images)
@@ -451,10 +471,12 @@ sample_image = function(arg)
 end
 
 --[[
-local labels, files = load_train_meta()
-print(#labels)
-local train_labels, test_labels, train_files, test_files = prepare_val_meta(0.1)
-print(#train_labels)
+local labels, files, features = load_train_meta()
+print(#features)
+local train_labels, test_labels, 
+      train_files, test_files,  
+      train_features, test_features = prepare_val_meta(0.1)
+print(#train_features)
 print(#test_labels)
 local files = load_test_meta()
 print(#files)
