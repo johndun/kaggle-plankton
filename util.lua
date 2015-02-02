@@ -402,6 +402,18 @@ sample_image = function(arg)
   local resize_x  = arg.resize_x or src:size(3)
   local resize_y  = arg.resize_y or src:size(2)
   local pad       = arg.pad or false
+  local n_colors  = src:size(1)
+
+  src = image.scale(src, resize_x, resize_y, 'bilinear')
+  if pad then
+    local new_img = torch.Tensor(n_colors, 
+                                 resize_y + 2 * pad, 
+                                 resize_x + 2 * pad):zero()
+    new_img:narrow(2, pad + 1, resize_y):narrow(3, pad + 1, resize_x):copy(src)
+    src = new_img
+    resize_x = resize_x + 2 * pad
+    resize_y = resize_y + 2 * pad
+  end
   local crp_off_x = 1
   if arg.crp_off_x then
     crp_off_x = math.floor(arg.crp_off_x * resize_x) + 1
@@ -418,18 +430,8 @@ sample_image = function(arg)
   if arg.crp_sz_y then
     crp_sz_y = math.floor(arg.crp_sz_y * resize_y)
   end
-  local n_colors  = src:size(1)
   local out_w     = arg.out_w or crp_sz_x
   local out_h     = arg.out_h or crp_sz_y
-  
-  src = image.scale(src, resize_x, resize_y, 'bilinear')
-  if pad then
-    local new_img = torch.Tensor(n_colors, 
-                                 resize_y + 2 * pad, 
-                                 resize_x + 2 * pad):zero()
-    new_img:narrow(2, pad + 1, resize_y):narrow(3, pad + 1, resize_x):copy(src)
-    src = new_img
-  end
   if hflip then
     src = image.hflip(src)
   end
