@@ -4,7 +4,7 @@ require 'optim'
 torch.setdefaulttensortype('torch.FloatTensor')
 torch.setnumthreads(4)
 
-local train_decode_fname = 'data/train_decode.csv'
+TRAIN_DECODE_FNAME = 'data/train_decode.csv'
 local base_img_dir = 'data'
 local n_labels = 121
 CLASSES = {}
@@ -14,7 +14,7 @@ end
 NUM_COLORS = 1
 INPUT_SZ = 48
 AWS_SYNC_DIR = 's3://johndun.aws.bucket/kaggle-plankton'
-TEST_DECODE_FNAME = 'data/test_images.csv'
+TEST_DECODE_FNAME = 'data/test_decode.csv'
 
 string.split_it = function(str, sep)
   if str == nil then 
@@ -31,17 +31,21 @@ string.split = function(str, sep)
   return ret
 end
 
-get_test_image_list = function(decode_fname)
+load_test_meta = function()
   local file = io.open(TEST_DECODE_FNAME, 'r')
-  local images = {}
+  local files = {}
+  local skip_head = true
   for line in file:lines() do
-    table.insert(images, line)
+    if not skip_head then
+      table.insert(files, line)
+    end
+    skip_head = false
   end
-  return images
+  return files
 end
 
-load_meta_data = function()
-  local file = io.open(train_decode_fname, 'r')
+load_train_meta = function()
+  local file = io.open(TRAIN_DECODE_FNAME, 'r')
   local skip_head = true
   local n_samples = 1
   for line in file:lines() do
@@ -51,7 +55,7 @@ load_meta_data = function()
     skip_head = false
   end
 
-  local file = io.open(train_decode_fname, 'r')
+  local file = io.open(TRAIN_DECODE_FNAME, 'r')
   local skip_head = true
   local line
   local j = 0
@@ -70,7 +74,7 @@ load_meta_data = function()
 end
 
 prepare_val_meta = function(val_prop)
-  local files, labels = load_meta_data()
+  local files, labels = load_train_meta()
   
   local train_files = {}
   local test_files = {}
@@ -259,7 +263,7 @@ train = function(model, criterion, learning_rates, seeds, epochs)
   local epochs = epochs
   config.eval = false
   config.id = string.gsub(config.id, '_val$', '')
-  local train_files, train_labels = load_meta_data()
+  local train_files, train_labels = load_train_meta()
   calculate_preproc_params(train_files)
   for i = 1, #learning_rates do
     print(string.format('\n### Training at learning rate %s: %s', 
@@ -445,3 +449,13 @@ sample_image = function(arg)
   end
   return src
 end
+
+--[[
+local labels, files = load_train_meta()
+print(#labels)
+local train_labels, test_labels, train_files, test_files = prepare_val_meta(0.1)
+print(#train_labels)
+print(#test_labels)
+local files = load_test_meta()
+print(#files)
+]]--

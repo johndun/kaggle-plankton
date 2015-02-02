@@ -5,3 +5,193 @@
 [0m### Number of model parameters: 10540537[0m	
 [0m
 Training epoch 1[0m	
+[0mFinal learning rate: 0.99914772698888[0m	
+[0mAccuracy on training set: 0.060961313012896[0m	
+[0mLoss on training set:     4.3511301163532[0m	
+[0m
+Training epoch 2[0m	
+[0mFinal learning rate: 0.99829690547925[0m	
+[0mAccuracy on training set: 0.067628956623681[0m	
+[0mLoss on training set:     4.1869515837601[0m	
+[0m
+Training epoch 3[0m	
+[0mFinal learning rate: 0.99744753176621[0m	
+[0mAccuracy on training set: 0.10052754982415[0m	
+[0mLoss on training set:     4.0714191489756[0m	
+[0m
+Training epoch 4[0m	
+[0mFinal learning rate: 0.99659960215744[0m	
+[0mAccuracy on training set: 0.12104337631887[0m	
+[0mLoss on training set:     3.8135787918268[0m	
+[0m
+Training epoch 5[0m	
+[0mFinal learning rate: 0.99575311297317[0m	
+[0mAccuracy on training set: 0.13273007033998[0m	
+[0mLoss on training set:     3.6802916037048[0m	
+[0m
+Training epoch 6[0m	
+[0mFinal learning rate: 0.99490806054613[0m	
+[0mAccuracy on training set: 0.16218493552169[0m	
+[0mLoss on training set:     3.5564431117352[0m	
+[0m
+Training epoch 7[0m	
+[0mFinal learning rate: 0.99406444122147[0m	
+[0mAccuracy on training set: 0.20944460726846[0m	
+[0mLoss on training set:     3.2616068698304[0m	
+[0m
+Training epoch 8[0m	
+[0mFinal learning rate: 0.99322225135674[0m	
+[0mAccuracy on training set: 0.24802168815944[0m	
+[0mLoss on training set:     2.9925118965978[0m	
+[0m
+Training epoch 9[0m	
+[0mFinal learning rate: 0.99238148732183[0m	
+[0mAccuracy on training set: 0.26641266119578[0m	
+[0mLoss on training set:     2.812524432216[0m	
+[0m
+Training epoch 10[0m	
+[0mFinal learning rate: 0.99154214549889[0m	
+[0mAccuracy on training set: 0.29333968347011[0m	
+[0mLoss on training set:     2.6771850254526[0m	
+[0m
+Training epoch 11[0m	
+[0mFinal learning rate: 0.99070422228233[0m	
+[0mAccuracy on training set: 0.31927754982415[0m	
+[0mLoss on training set:     2.5500490816227[0m	
+[0m
+Training epoch 12[0m	
+[0mFinal learning rate: 0.98986771407869[0m	
+[0mAccuracy on training set: 0.33777842907386[0m	
+[0mLoss on training set:     2.4446696672656[0m	
+[0m
+Training epoch 13[0m	
+[0mFinal learning rate: 0.98903261730669[0m	
+[0mAccuracy on training set: 0.35184642438453[0m	
+[0mLoss on training set:     2.3545818782672[0m	
+[0m
+Training epoch 14[0m	
+[0mFinal learning rate: 0.98819892839708[0m	
+[0mAccuracy on training set: 0.37848036342321[0m	
+[0mLoss on training set:     2.2571518548152[0m	
+[0m
+Training epoch 15[0m	
+[0mFinal learning rate: 0.98736664379267[0m	
+[0mAccuracy on training set: 0.39240181711606[0m	
+[0mLoss on training set:     2.1736926230714[0m	
+[0m
+Training epoch 16[0m	
+[0mFinal learning rate: 0.98653575994823[0m	
+[0mAccuracy on training set: 0.40654308323564[0m	
+[0mLoss on training set:     2.112501168391[0m	
+[0m
+Training epoch 17[0m	
+[0mFinal learning rate: 0.98570627333044[0m	
+[0mAccuracy on training set: 0.42515386869871[0m	
+[0mLoss on training set:     2.0429820942377[0m	
+[0m
+Training epoch 18[0m	
+[0mFinal learning rate: 0.98487818041786[0m	
+[0mAccuracy on training set: 0.43680392731536[0m	
+[0mLoss on training set:     2.0012213927612[0m	
+[0m
+Training epoch 19[0m	
+[0mFinal learning rate: 0.9840514777009[0m	
+[0mAccuracy on training set: 0.448453985932[0m	
+[0mLoss on training set:     1.9430147602669[0m	
+[0m
+Training epoch 20[0m	
+[0mFinal learning rate: 0.98322616168171[0m	
+[0mAccuracy on training set: 0.45655041031653[0m	
+[0mLoss on training set:     1.9105234276678[0m	
+[0m
+Training epoch 21[0m	
+[0mFinal learning rate: 0.98240222887418[0m	
+[0mAccuracy on training set: 0.46842028135991[0m	
+[0mLoss on training set:     1.8685286160196[0m	
+[0m
+Training epoch 22[0m	
+[0mFinal learning rate: 0.98157967580386[0m	
+[0mAccuracy on training set: 0.47794548651817[0m	
+[0mLoss on training set:     1.8178400161457[0m	
+[0m
+Training epoch 23[0m	
+[0mFinal learning rate: 0.98075849900796[0m	
+[0mAccuracy on training set: 0.48952227432591[0m	
+[0mLoss on training set:     1.7866449679443[0m	
+[0m
+Training epoch 24[0m	
+[0mFinal learning rate: 0.97993869503524[0m	
+[0mAccuracy on training set: 0.49106096131301[0m	
+[0mLoss on training set:     1.7550422718109[0m	
+[0m
+Training epoch 25[0m	
+[0mFinal learning rate: 0.97912026044599[0m	
+[0mAccuracy on training set: 0.49915738569754[0m	
+[0mLoss on training set:     1.726780597578[0m	
+[0m
+Training epoch 26[0m	
+[0mFinal learning rate: 0.97830319181199[0m	
+[0mAccuracy on training set: 0.5090123094959[0m	
+[0mLoss on training set:     1.7037596720798[0m	
+[0m
+Training epoch 27[0m	
+[0mFinal learning rate: 0.97748748571646[0m	
+[0mAccuracy on training set: 0.5131521101993[0m	
+[0mLoss on training set:     1.6735584824482[0m	
+[0m
+Training epoch 28[0m	
+[0mFinal learning rate: 0.976673138754[0m	
+[0mAccuracy on training set: 0.52154161781946[0m	
+[0mLoss on training set:     1.6345866369105[0m	
+[0m
+Training epoch 29[0m	
+[0mFinal learning rate: 0.97586014753054[0m	
+[0mAccuracy on training set: 0.53040738569754[0m	
+[0mLoss on training set:     1.6051561398211[0m	
+[0m
+Training epoch 30[0m	
+[0mFinal learning rate: 0.97504850866331[0m	
+[0mAccuracy on training set: 0.53604923798359[0m	
+[0mLoss on training set:     1.5850279545515[0m	
+[0m
+Training epoch 31[0m	
+[0mFinal learning rate: 0.97423821878078[0m	
+[0mAccuracy on training set: 0.53974941383353[0m	
+[0mLoss on training set:     1.5638004876024[0m	
+[0m
+Training epoch 32[0m	
+[0mFinal learning rate: 0.97342927452263[0m	
+[0mAccuracy on training set: 0.54806565064478[0m	
+[0mLoss on training set:     1.5385556572935[0m	
+[0m
+Training epoch 33[0m	
+[0mFinal learning rate: 0.97262167253968[0m	
+[0mAccuracy on training set: 0.55484320046893[0m	
+[0mLoss on training set:     1.5091364991596[0m	
+[0m
+Training epoch 34[0m	
+[0mFinal learning rate: 0.97181540949386[0m	
+[0mAccuracy on training set: 0.55700468933177[0m	
+[0mLoss on training set:     1.4955156526707[0m	
+[0m
+Training epoch 35[0m	
+[0mFinal learning rate: 0.97101048205815[0m	
+[0mAccuracy on training set: 0.56202373974209[0m	
+[0mLoss on training set:     1.4820634845976[0m	
+[0m
+Training epoch 36[0m	
+[0mFinal learning rate: 0.97020688691657[0m	
+[0mAccuracy on training set: 0.56905773739742[0m	
+[0mLoss on training set:     1.454311479436[0m	
+[0m
+Training epoch 37[0m	
+[0mFinal learning rate: 0.96940462076407[0m	
+[0mAccuracy on training set: 0.5760550996483[0m	
+[0mLoss on training set:     1.4347456547449[0m	
+[0m
+Training epoch 38[0m	
+[0mFinal learning rate: 0.96860368030654[0m	
+[0mAccuracy on training set: 0.57894929660023[0m	
+[0mLoss on training set:     1.4213208863348[0m	
+[0m
+Training epoch 39[0m	
